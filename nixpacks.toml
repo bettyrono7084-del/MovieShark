@@ -1,0 +1,8 @@
+[build]
+pkgManager = "npm"
+
+[build.setup]
+run = "cd backend && npm ci"
+
+[start]
+run = "cd backend && npm start"
