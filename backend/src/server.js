@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Serve static files from public directory (frontend)
-app.use(express.static(path.join(__dirname, '../')));
+app.use(express.static(path.join(__dirname, '../../')));
 
 // Routes
 const moviesRouter = require('./routes/movies');
@@ -24,12 +24,12 @@ app.use('/api/admin', adminRouter);
 
 // Serve index.html for root path
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
 // Serve admin.html
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../admin.html'));
+  res.sendFile(path.join(__dirname, '../../admin.html'));
 });
 
 // Health check

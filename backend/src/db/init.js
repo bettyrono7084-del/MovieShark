@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, '../../movies.db');
+const DB_PATH = path.join(__dirname, '../../../movies.db');
 
 let db = null;
 
