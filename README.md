@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MovieShark 🦈
 
 A full-stack movie streaming and download platform with admin management system.
@@ -245,3 +246,7 @@ For issues or questions:
 ---
 
 **Built with ❤️ for movie enthusiasts**
+=======
+# MovieShark
+Streaming platform 
+>>>>>>> 613bb7aabe0d007ca25d2a7eae7154a67f8b287e
