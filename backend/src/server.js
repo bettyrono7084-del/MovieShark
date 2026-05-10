@@ -13,7 +13,9 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Serve static files from public directory (frontend)
-app.use(express.static(path.join(__dirname, '../../')));
+// process.cwd() is used instead of __dirname so paths resolve correctly
+// when Railway sets rootDirectory: backend (cwd = backend/, frontend is one level up)
+app.use(express.static(path.join(process.cwd(), '../')));
 
 // Routes
 const moviesRouter = require('./routes/movies');
@@ -24,12 +26,12 @@ app.use('/api/admin', adminRouter);
 
 // Serve index.html for root path
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../index.html'));
+  res.sendFile(path.join(process.cwd(), '../index.html'));
 });
 
 // Serve admin.html
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../admin.html'));
+  res.sendFile(path.join(process.cwd(), '../admin.html'));
 });
 
 // Health check
