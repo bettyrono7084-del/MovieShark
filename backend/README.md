@@ -96,6 +96,41 @@ SQLite database at `./movies.db`
 Tables:
 - `movies` - Movie records with metadata and file references
 
+## Upload Directory & Persistence
+
+Videos are stored in the `uploads/` directory (configurable via `UPLOAD_DIR` env variable).
+
+### Local Development
+- Videos saved to `./uploads` (default)
+- Persists across server restarts
+- Included in `.gitignore` (files not tracked in git)
+
+### Deployment (Railway)
+
+⚠️ **IMPORTANT**: Videos will disappear on redeploy without persistent storage!
+
+To make videos persist:
+
+1. In Railway dashboard, create a **Disk** mounted at `/data`
+2. Set environment variable: `UPLOAD_DIR=/data/uploads`
+3. This means:
+   - ✅ Videos persist across redeploys
+   - ✅ Videos survive server restarts
+   - ✅ Uploaded content is permanent
+
+<details>
+<summary>How it works</summary>
+
+Without persistent storage:
+- Container restarts → `/uploads` directory is lost
+- New redeploy → Fresh container, all files gone
+
+With persistent storage (`UPLOAD_DIR=/data/uploads`):
+- Container can restart
+- `/data` volume persists on Railway hardware
+- Videos remain available
+</details>
+
 ## Project Structure
 
 ```

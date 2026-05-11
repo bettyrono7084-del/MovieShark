@@ -1,13 +1,33 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
-// Database path: go up 2 levels from src to root, or 1 level if deployed flat
-let DB_PATH = path.join(__dirname, '../../movies.db');
-if (!require('fs').existsSync(path.dirname(DB_PATH))) {
-  DB_PATH = path.join(__dirname, '../movies.db');
+// Database path configuration
+// Use UPLOAD_DIR base for deployment (Railway), otherwise use local path
+let DB_PATH;
+
+if (process.env.UPLOAD_DIR) {
+  // On Railway/deployment with persistent volume
+  const dataDir = path.dirname(process.env.UPLOAD_DIR);
+  DB_PATH = path.join(dataDir, 'movies.db');
+} else {
+  // Local development
+  DB_PATH = path.join(__dirname, '../../movies.db');
+  if (!fs.existsSync(path.dirname(DB_PATH))) {
+    DB_PATH = path.join(__dirname, '../movies.db');
+  }
 }
 
 let db = null;
+
+console.log('📁 Database Configuration:');
+console.log('   DB_PATH:', DB_PATH);
+if (process.env.UPLOAD_DIR) {
+  console.log('   UPLOAD_DIR (env):', process.env.UPLOAD_DIR);
+  console.log('   ✓ Using persistent storage paths\n');
+} else {
+  console.log('   ✓ Using local development paths\n');
+}
 
 function getDb() {
   if (!db) {

@@ -52,14 +52,19 @@ console.log('━━━━━━━━━━━━━━━━━━━━━━�
 app.use(express.static(publicPath));
 
 // Setup uploads directory - IMPORTANT for persistence
-const uploadsPath = path.resolve(__dirname, '../../uploads');
+// Use UPLOAD_DIR env variable if set (for Railway/deployment), otherwise use local path
+const uploadsPath = process.env.UPLOAD_DIR 
+  ? path.resolve(process.env.UPLOAD_DIR)
+  : path.resolve(__dirname, '../../uploads');
+
 if (!fs.existsSync(uploadsPath)) {
   fs.mkdirSync(uploadsPath, { recursive: true });
   console.log('✓ Created uploads directory:', uploadsPath);
 }
 // Serve uploaded files as static
 app.use('/uploads', express.static(uploadsPath));
-console.log('✓ Serving uploads from:', uploadsPath, '\n');
+console.log('✓ Serving uploads from:', uploadsPath);
+console.log('✓ Using UPLOAD_DIR:', process.env.UPLOAD_DIR || '(not set, using local path)\n');
 
 // Routes
 const moviesRouter = require('./routes/movies');

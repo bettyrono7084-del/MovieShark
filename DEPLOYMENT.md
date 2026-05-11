@@ -122,6 +122,35 @@ const API_URL = 'http://localhost:3000/api';
 
 ## Troubleshooting
 
+### ⚠️ **CRITICAL: Uploaded Videos Disappearing?**
+
+This happens because Railway containers are **ephemeral** (temporary). Here's the fix:
+
+**Problem**: Videos uploaded through admin panel disappear after redeploy or server restart
+
+**Root Cause**: Without persistent storage, files saved in `/uploads` are lost when the container restarts
+
+**Solution** - Set up Persistent Volume:
+1. Go to Railway Dashboard → Your MovieShark Project
+2. Go to **Data** tab
+3. Click **Create Disk** 
+4. Set **Mount Path** to `/data` and confirm
+5. Go to **Variables** tab
+6. Set `UPLOAD_DIR=/data/uploads`
+7. Redeploy your app
+
+After this, uploaded videos will persist across:
+- ✅ Server restarts
+- ✅ Redeployments
+- ✅ Redeploys from GitHub
+
+**Check if it's working:**
+1. Upload a video through the admin panel
+2. Redeploy (`railway up` or push to GitHub)
+3. Video should still be there
+
+### Other Issues
+
 **Issue**: Deployment fails
 - Check build logs in Railway dashboard
 - Ensure Node.js dependencies are correct
@@ -133,8 +162,13 @@ const API_URL = 'http://localhost:3000/api';
 - Check if database initialization is working
 
 **Issue**: Database errors
-- Railway should auto-initialize SQLite
-- If issues persist, SSH into Railway and check: `ls -la movies.db`
+- Railway should auto-initialize SQLite with persistent disk
+- If issues persist, SSH into Railway and check: `railway shell`
+
+**Issue**: Videos upload but don't appear after redeploy
+- **THIS IS THE PERSISTENT STORAGE ISSUE** - follow the solution above
+- Verify `UPLOAD_DIR=/data/uploads` is set
+- Verify the disk is mounted at `/data`
 
 ## Next Steps
 
