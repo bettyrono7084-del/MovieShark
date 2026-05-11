@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { initDb } = require('./db/init');
 
 const app = express();
@@ -14,6 +15,21 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Serve static files from root directory (frontend files in parent directory)
 const rootPath = path.resolve(__dirname, '../../');
+const indexPath = path.join(rootPath, 'index.html');
+const adminPath = path.join(rootPath, 'admin.html');
+
+console.log('🦈 MovieShark Server Setup');
+console.log('Root path:', rootPath);
+console.log('Index.html path:', indexPath);
+console.log('Index.html exists:', fs.existsSync(indexPath));
+console.log('Admin.html exists:', fs.existsSync(adminPath));
+try {
+  const files = fs.readdirSync(rootPath).filter(f => f.endsWith('.html'));
+  console.log('HTML files in root:', files);
+} catch (e) {
+  console.log('Error reading root directory:', e.message);
+}
+
 console.log('Serving static files from:', rootPath);
 app.use(express.static(rootPath));
 
@@ -26,16 +42,18 @@ app.use('/api/admin', adminRouter);
 
 // Serve index.html for root path
 app.get('/', (req, res) => {
-  const indexPath = path.join(rootPath, 'index.html');
-  console.log('Sending index.html from:', indexPath);
-  res.sendFile(indexPath);
+  console.log('Serving index.html from:', indexPath);
+  res.sendFile(indexPath, (err) => {
+    if (err) console.error('Error serving index.html:', err.message);
+  });
 });
 
 // Serve admin.html
 app.get('/admin', (req, res) => {
-  const adminPath = path.join(rootPath, 'admin.html');
-  console.log('Sending admin.html from:', adminPath);
-  res.sendFile(adminPath);
+  console.log('Serving admin.html from:', adminPath);
+  res.sendFile(adminPath, (err) => {
+    if (err) console.error('Error serving admin.html:', err.message);
+  });
 });
 
 // Health check
