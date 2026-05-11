@@ -40,9 +40,10 @@
     .sidebar-logo {
       padding: 1.5rem; border-bottom: 1px solid var(--border);
       font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.1em;
-      color: var(--accent); text-decoration: none; display: block;
+      color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
     }
     .sidebar-logo span { color: var(--accent2); }
+    .sidebar-logo img { display: block; }
 
     .sidebar-label {
       padding: 1rem 1.5rem 0.4rem;
@@ -275,7 +276,7 @@
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <a class="sidebar-logo" href="index.html">Movie<span>Shark</span> 🦈</a>
+  <a class="sidebar-logo" href="index.html"><img src="/assets/logo.svg" alt="MovieShark Logo" style="height: 32px; margin-right: 6px; vertical-align: middle;"> Movie<span>Shark</span></a>
 
   <p class="sidebar-label">Management</p>
   <nav class="sidebar-nav">
