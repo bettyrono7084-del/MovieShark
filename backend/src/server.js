@@ -13,24 +13,33 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Serve static files from root directory (frontend files in parent directory)
+// Get root path - working directory should be /app/backend on Railway or project root locally
+// __dirname is /app/backend/src, so go up 2 levels to /app
 const rootPath = path.resolve(__dirname, '../../');
 const indexPath = path.join(rootPath, 'index.html');
 const adminPath = path.join(rootPath, 'admin.html');
 
-console.log('🦈 MovieShark Server Setup');
-console.log('Root path:', rootPath);
-console.log('Index.html path:', indexPath);
+console.log('\n🦈 MovieShark Backend Configuration');
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+console.log('Current __dirname:', __dirname);
+console.log('Calculated rootPath:', rootPath);
+console.log('Index.html full path:', indexPath);
 console.log('Index.html exists:', fs.existsSync(indexPath));
 console.log('Admin.html exists:', fs.existsSync(adminPath));
+
+// List actual files in root directory
 try {
-  const files = fs.readdirSync(rootPath).filter(f => f.endsWith('.html'));
-  console.log('HTML files in root:', files);
+  const allFiles = fs.readdirSync(rootPath);
+  const htmlFiles = allFiles.filter(f => f.endsWith('.html'));
+  console.log('HTML files in root:', htmlFiles.length > 0 ? htmlFiles : 'NONE FOUND');
+  console.log('First 10 files in root:', allFiles.slice(0, 10));
 } catch (e) {
-  console.log('Error reading root directory:', e.message);
+  console.log('ERROR reading root directory:', e.message);
 }
 
 console.log('Serving static files from:', rootPath);
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+
 app.use(express.static(rootPath));
 
 // Routes
