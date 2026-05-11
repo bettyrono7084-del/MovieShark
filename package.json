@@ -1,0 +1,14 @@
+{
+  "name": "movieshark",
+  "version": "1.0.0",
+  "description": "MovieShark - Full-stack movie streaming platform",
+  "main": "backend/src/server.js",
+  "scripts": {
+    "start": "cd backend && npm install && npm start",
+    "dev": "cd backend && npm run dev",
+    "install": "cd backend && npm install"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
