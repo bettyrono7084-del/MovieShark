@@ -68,7 +68,7 @@ router.get('/:id/stream', async (req, res) => {
       return res.status(404).json({ error: 'Movie or video file not found' });
     }
 
-    const videoPath = path.join(__dirname, '../../uploads', movie.videoFile);
+    const videoPath = path.join('/app/uploads', movie.videoFile);
     
     if (!fs.existsSync(videoPath)) {
       return res.status(404).json({ error: 'Video file not found on disk' });
@@ -113,7 +113,7 @@ router.get('/:id/download', async (req, res) => {
       return res.status(404).json({ error: 'Movie or video file not found' });
     }
 
-    const videoPath = path.join(__dirname, '../../uploads', movie.videoFile);
+    const videoPath = path.join('/app/uploads', movie.videoFile);
     
     if (!fs.existsSync(videoPath)) {
       return res.status(404).json({ error: 'Video file not found on disk' });
