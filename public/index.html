@@ -376,6 +376,7 @@
     }
     .footer-logo {
       font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--accent); letter-spacing: 0.1em;
+      display: flex; align-items: center; gap: 0;
     }
     .footer-logo span { color: var(--accent2); }
     footer p { color: var(--muted); font-size: 0.78rem; }
@@ -553,7 +554,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="index.html"><img src="/assets/logo.svg" alt="MovieShark Logo" style="height: 40px; margin-right: 8px;"> Movie<span>Shark</span></a>
+  <a class="logo" href="index.html"><img src="/assets/logo.svg" alt="MovieShark Logo" style="height: 40px; width: auto; margin-right: 8px; flex-shrink: 0;"> Movie<span>Shark</span></a>
   <div class="nav-right">
     <a href="#">Trending</a>
     <a href="#">Genres</a>
@@ -662,7 +663,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo"><img src="/assets/logo.svg" alt="MovieShark Logo" style="height: 32px; margin-right: 8px; vertical-align: middle;"> Movie<span>Shark</span></div>
+  <div class="footer-logo"><img src="/assets/logo.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 8px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></div>
   <p>© 2025 MovieShark. For demonstration purposes only.</p>
   <p>Built for cinephiles worldwide</p>
 </footer>

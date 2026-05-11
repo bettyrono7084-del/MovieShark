@@ -1,35 +1,46 @@
-<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- Shark body -->
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
   <defs>
-    <linearGradient id="sharkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#e8b84b;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#ff4d6d;stop-opacity:1" />
     </linearGradient>
   </defs>
   
-  <!-- Film reel background -->
-  <circle cx="100" cy="100" r="95" fill="none" stroke="#1a2540" stroke-width="2"/>
-  
-  <!-- Shark head -->
-  <path d="M 80 60 L 130 85 L 125 110 Q 115 120 100 125 Q 85 120 75 110 L 70 85 Z" fill="url(#sharkGrad)" stroke="#e8b84b" stroke-width="1.5"/>
+  <!-- Shark body -->
+  <path d="M 20 40 Q 35 30 50 25 Q 65 30 70 40 L 75 60 Q 72 72 50 80 Q 28 72 25 60 Z" 
+        fill="url(#grad1)" 
+        stroke="#e8b84b" 
+        stroke-width="1.5"
+        stroke-linejoin="round"/>
   
   <!-- Shark snout -->
-  <path d="M 70 85 L 50 90 L 65 95 Z" fill="#ff4d6d" stroke="#e8b84b" stroke-width="1"/>
+  <path d="M 25 52 L 10 55 L 20 58 Z" 
+        fill="#ff4d6d" 
+        stroke="#e8b84b" 
+        stroke-width="1"
+        stroke-linejoin="round"/>
   
   <!-- Shark dorsal fin -->
-  <path d="M 100 60 L 95 40 L 105 60 Z" fill="url(#sharkGrad)" stroke="#e8b84b" stroke-width="1.5"/>
-  
-  <!-- Shark bottom fin -->
-  <path d="M 95 120 L 85 135 L 100 125 Z" fill="#ff4d6d" stroke="#e8b84b" stroke-width="1"/>
+  <path d="M 50 25 L 45 8 L 50 25 L 55 8 Z" 
+        fill="url(#grad1)" 
+        stroke="#e8b84b" 
+        stroke-width="1.2"
+        stroke-linejoin="round"/>
   
   <!-- Shark eye -->
-  <circle cx="115" cy="75" r="4" fill="#080a0f"/>
-  <circle cx="116" cy="74" r="1.5" fill="#e8b84b"/>
+  <circle cx="60" cy="42" r="2.5" 
+          fill="#080a0f" 
+          stroke="#e8b84b" 
+          stroke-width="0.5"/>
   
-  <!-- Film strip details -->
-  <line x1="55" y1="100" x2="145" y2="100" stroke="#1a2540" stroke-width="1.5" opacity="0.5"/>
-  <line x1="60" y1="50" x2="140" y2="150" stroke="#1a2540" stroke-width="1.5" opacity="0.3"/>
+  <!-- Shark eye shine -->
+  <circle cx="61" cy="41" r="0.8" 
+          fill="#e8b84b"/>
   
-  <!-- Play button symbol integrated -->
-  <polygon points="150,120 150,140 165,130" fill="#e8b84b" opacity="0.8"/>
+  <!-- Play button integrated -->
+  <polygon points="78,55 78,70 93,62.5" 
+           fill="#e8b84b" 
+           stroke="#e8b84b" 
+           stroke-width="0.8"
+           stroke-linejoin="round"/>
 </svg>
