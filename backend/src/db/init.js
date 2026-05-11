@@ -1,7 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, '../../movies.db');
+// Database path: go up 2 levels from src to root, or 1 level if deployed flat
+let DB_PATH = path.join(__dirname, '../../movies.db');
+if (!require('fs').existsSync(path.dirname(DB_PATH))) {
+  DB_PATH = path.join(__dirname, '../movies.db');
+}
 
 let db = null;
 

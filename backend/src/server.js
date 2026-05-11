@@ -14,38 +14,42 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Get root path
-// Locally: __dirname is backend/src, so go up 2 levels to root
-// Railway: __dirname is /app/src, so go up 1 level to /app
-// Use __dirname/../.. first, fallback to __dirname/.. if files not found
-let rootPath = path.resolve(__dirname, '../../');
+// Locally: __dirname is backend/src, so go up 2 levels to root, then public/
+// Railway: __dirname is /app/src, so public is /app/public
+let rootPath = path.resolve(__dirname, '../../public');
+let publicPath = rootPath;
+
+// Fallback for Railway structure
 if (!fs.existsSync(path.join(rootPath, 'index.html'))) {
-  rootPath = path.resolve(__dirname, '../');
+  publicPath = path.resolve(__dirname, '../public');
+  rootPath = publicPath;
 }
-const indexPath = path.join(rootPath, 'index.html');
-const adminPath = path.join(rootPath, 'admin.html');
+
+const indexPath = path.join(publicPath, 'index.html');
+const adminPath = path.join(publicPath, 'admin.html');
 
 console.log('\n🦈 MovieShark Backend Configuration');
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 console.log('Current __dirname:', __dirname);
-console.log('Calculated rootPath:', rootPath);
+console.log('Public folder path:', publicPath);
 console.log('Index.html full path:', indexPath);
 console.log('Index.html exists:', fs.existsSync(indexPath));
 console.log('Admin.html exists:', fs.existsSync(adminPath));
 
-// List actual files in root directory
+// List actual files in public directory
 try {
-  const allFiles = fs.readdirSync(rootPath);
+  const allFiles = fs.readdirSync(publicPath);
   const htmlFiles = allFiles.filter(f => f.endsWith('.html'));
-  console.log('HTML files in root:', htmlFiles.length > 0 ? htmlFiles : 'NONE FOUND');
-  console.log('First 10 files in root:', allFiles.slice(0, 10));
+  console.log('HTML files in public:', htmlFiles.length > 0 ? htmlFiles : 'NONE FOUND');
+  console.log('First 10 files in public:', allFiles.slice(0, 10));
 } catch (e) {
-  console.log('ERROR reading root directory:', e.message);
+  console.log('ERROR reading public directory:', e.message);
 }
 
-console.log('Serving static files from:', rootPath);
+console.log('Serving static files from:', publicPath);
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
-app.use(express.static(rootPath));
+app.use(express.static(publicPath));
 
 // Routes
 const moviesRouter = require('./routes/movies');
