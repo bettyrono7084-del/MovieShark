@@ -69,7 +69,7 @@ NODE_ENV=production
 JWT_SECRET=your-secure-random-string-here
 ADMIN_PASSWORD=your-secure-password
 ADMIN_USERNAME=admin
-UPLOAD_DIR=./uploads
+UPLOAD_DIR=/data/uploads
 MAX_FILE_SIZE=5000000000
 ```
 
@@ -77,6 +77,20 @@ MAX_FILE_SIZE=5000000000
 - Generate a strong JWT_SECRET: https://cryptotools.com/random/hex
 - Change ADMIN_PASSWORD to something strong
 - Replace ADMIN_USERNAME if desired
+
+## Step 3b: Configure Persistent Storage (Important for Videos)
+
+**Uploaded videos will disappear on server restart without persistent storage!**
+
+1. In Railway dashboard, go to your MovieShark project
+2. Click **Data** → **Create Database** (or use existing volume)
+3. Add a persistent volume:
+   - Mount Path: `/data`
+   - This makes files persist across restarts
+
+4. Set `UPLOAD_DIR=/data/uploads` in Step 3 environment variables
+
+Without this step, all uploaded videos will be lost when your Railway app restarts!
 
 ## Step 4: Verify Deployment
 

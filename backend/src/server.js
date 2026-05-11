@@ -51,6 +51,16 @@ console.log('━━━━━━━━━━━━━━━━━━━━━━�
 
 app.use(express.static(publicPath));
 
+// Setup uploads directory - IMPORTANT for persistence
+const uploadsPath = path.resolve(__dirname, '../../uploads');
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true });
+  console.log('✓ Created uploads directory:', uploadsPath);
+}
+// Serve uploaded files as static
+app.use('/uploads', express.static(uploadsPath));
+console.log('✓ Serving uploads from:', uploadsPath, '\n');
+
 // Routes
 const moviesRouter = require('./routes/movies');
 const adminRouter = require('./routes/admin');

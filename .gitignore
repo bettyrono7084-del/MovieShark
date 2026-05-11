@@ -9,6 +9,8 @@ build/
 .vscode/
 .idea/
 .env.example
+uploads/*
+!uploads/.gitkeep
 
 *.7z
 *.zip

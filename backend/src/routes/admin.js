@@ -10,6 +10,9 @@ const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
 // Use environment variable for upload directory (Railway Volume or local)
+// IMPORTANT: On Railway/deployment platforms, set UPLOAD_DIR to a persistent volume
+// LOCAL: Uploads saved to ../../uploads (c:\MovieShark\uploads)
+// RAILWAY: Set UPLOAD_DIR=/data/uploads or similar persistent mount point in railway.json
 const UPLOAD_DIR = process.env.UPLOAD_DIR 
   ? path.resolve(process.env.UPLOAD_DIR)
   : path.join(__dirname, '../../uploads');
