@@ -603,7 +603,6 @@
     document.getElementById('mTitle').textContent = currentMovie.title;
     document.getElementById('mRating').innerHTML = `★ ${currentMovie.rating || '—'} <small>/10</small>`;
     document.getElementById('mDesc').textContent = currentMovie.description || 'No description available.';
-    document.getElementById('streamLabel').textContent = currentMovie.title;
     document.getElementById('mPoster').textContent = currentMovie.emoji || '🎬';
 
     document.getElementById('mTags').innerHTML = tags
