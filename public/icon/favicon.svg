@@ -1,0 +1,27 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="faviconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8b84b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff4d6d;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="32" fill="#080a0f"/>
+  
+  <!-- Shark body -->
+  <path d="M 20 20 L 50 32 L 45 45 Q 38 52 32 55 Q 26 52 19 45 L 14 32 Z" fill="url(#faviconGrad)" stroke="#080a0f" stroke-width="1"/>
+  
+  <!-- Shark snout -->
+  <path d="M 14 32 L 8 35 L 12 37 Z" fill="#ff4d6d" stroke="#080a0f" stroke-width="1"/>
+  
+  <!-- Shark dorsal fin -->
+  <path d="M 32 20 L 28 10 L 35 20 Z" fill="url(#faviconGrad)" stroke="#080a0f" stroke-width="1"/>
+  
+  <!-- Eye -->
+  <circle cx="42" cy="25" r="2.5" fill="#080a0f"/>
+  <circle cx="42.5" cy="24.5" r="1" fill="#e8b84b"/>
+  
+  <!-- Play button symbol -->
+  <polygon points="48,35 48,43 56,39" fill="#e8b84b" opacity="0.9"/>
+</svg>

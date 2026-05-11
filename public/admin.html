@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="MovieShark Admin Panel: Manage movie library, upload new titles, and view site statistics. Secure access for administrators."/>
   <meta name="keywords" content="MovieShark admin, movie management, content management, film library, admin panel"/>
-  <link rel="icon" type="image/x-icon" href="/icon/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="/icon/favicon.svg">
   <title>MovieShark – Admin Panel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -261,14 +261,118 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
 
+    @media (max-width: 1024px) {
+      .topbar h1 { font-size: 1.3rem; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+
     @media (max-width: 768px) {
-      .sidebar { width: 60px; }
-      .sidebar-logo { font-size: 1.2rem; padding: 1rem 0.5rem; text-align: center; }
+      /* Sidebar becomes compact */
+      .sidebar { width: 70px; position: relative; }
+      .sidebar-logo { font-size: 1.1rem; padding: 1.2rem 0.5rem; text-align: center; gap: 0; }
+      .sidebar-logo img { height: 24px; margin-right: 0; }
       .sidebar-logo span { display: none; }
+      .nav-item { gap: 0; padding: 0.7rem; justify-content: center; }
+      .nav-item .icon { font-size: 1.2rem; }
       .nav-item span.label { display: none; }
       .admin-badge { display: none; }
       .sidebar-label { display: none; }
-      .form-grid { grid-template-columns: 1fr; }
+      
+      /* Main content adjustments */
+      .main { overflow-x: hidden; }
+      .topbar { padding: 1rem 1.5rem; }
+      .topbar h1 { font-size: 1.2rem; }
+      .view-site { padding: 0.4rem 0.9rem; font-size: 0.7rem; }
+      
+      /* Panels */
+      .panel { padding: 1.5rem; }
+      
+      /* Stats */
+      .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-bottom: 1.5rem; }
+      .stat-card { padding: 1rem; border-radius: 8px; }
+      .stat-card .s-label { font-size: 0.65rem; margin-bottom: 0.25rem; }
+      .stat-card .s-num { font-size: 1.8rem; }
+      
+      /* Section title */
+      .section-title { font-size: 1.2rem; margin-bottom: 0.8rem; }
+      
+      /* Forms */
+      .upload-card { padding: 1.25rem; margin-bottom: 1.5rem; }
+      .form-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+      label { font-size: 0.7rem; }
+      input[type=text], input[type=number], select, textarea {
+        padding: 0.6rem 0.75rem; font-size: 0.9rem; border-radius: 6px;
+      }
+      
+      /* Buttons */
+      .btn-primary, .btn-secondary { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
+      .btn-upload { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
+      
+      /* Tables */
+      .lib-table { font-size: 0.85rem; }
+      .lib-table th, .lib-table td { padding: 0.7rem; }
+      .btn-delete, .btn-view { padding: 0.35rem 0.7rem; font-size: 0.7rem; }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar { width: 56px; }
+      .sidebar-logo { padding: 0.9rem 0.4rem; font-size: 1rem; }
+      .sidebar-logo img { height: 20px; }
+      .nav-item { padding: 0.6rem 0.4rem; }
+      .nav-item .icon { font-size: 1.1rem; }
+      
+      .topbar { padding: 0.8rem 1rem; flex-wrap: wrap; }
+      .topbar h1 { font-size: 1rem; flex: 1; }
+      .view-site { padding: 0.35rem 0.7rem; font-size: 0.65rem; }
+      
+      .panel { padding: 1rem; }
+      
+      .stat-grid { grid-template-columns: 1fr; gap: 0.6rem; margin-bottom: 1rem; }
+      .stat-card { padding: 0.8rem; }
+      .stat-card .s-label { font-size: 0.6rem; margin-bottom: 0.2rem; }
+      .stat-card .s-num { font-size: 1.5rem; }
+      
+      .section-title { font-size: 1.1rem; margin-bottom: 0.6rem; }
+      
+      .upload-card { padding: 1rem; margin-bottom: 1rem; }
+      .form-grid { gap: 0.6rem; }
+      .form-group { gap: 0.3rem; }
+      label { font-size: 0.65rem; }
+      input[type=text], input[type=number], select, textarea {
+        padding: 0.5rem 0.6rem; font-size: 0.85rem;
+      }
+      
+      .btn-primary, .btn-secondary, .btn-upload { 
+        padding: 0.5rem 1rem; font-size: 0.8rem; width: 100%;
+      }
+      
+      .lib-table { font-size: 0.75rem; }
+      .lib-table th, .lib-table td { padding: 0.5rem 0.4rem; }
+      .btn-delete, .btn-view { padding: 0.3rem 0.6rem; font-size: 0.65rem; }
+    }
+
+    @media (max-width: 360px) {
+      .sidebar { width: 50px; }
+      .sidebar-logo { padding: 0.8rem 0.35rem; }
+      .sidebar-logo img { height: 18px; }
+      .nav-item { padding: 0.5rem 0.3rem; }
+      .nav-item .icon { font-size: 1rem; }
+      
+      .topbar h1 { font-size: 0.9rem; }
+      .view-site { padding: 0.3rem 0.6rem; font-size: 0.6rem; }
+      
+      .panel { padding: 0.75rem; }
+      .stat-grid { gap: 0.4rem; }
+      .stat-card { padding: 0.6rem; }
+      .stat-card .s-num { font-size: 1.3rem; }
+      
+      .upload-card { padding: 0.8rem; margin-bottom: 0.8rem; }
+      input[type=text], input[type=number], select, textarea {
+        padding: 0.45rem 0.5rem; font-size: 0.8rem;
+      }
+      
+      .btn-primary, .btn-secondary, .btn-upload { font-size: 0.75rem; }
     }
   </style>
 </head>
