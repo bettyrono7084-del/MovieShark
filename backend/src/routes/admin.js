@@ -8,7 +8,13 @@ const { authenticateToken, generateToken } = require('../middleware/auth');
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-const UPLOAD_DIR = path.join(__dirname, '../../uploads');
+
+// Use environment variable for upload directory (Railway Volume or local)
+const UPLOAD_DIR = process.env.UPLOAD_DIR 
+  ? path.resolve(process.env.UPLOAD_DIR)
+  : path.join(__dirname, '../../uploads');
+
+console.log('Upload directory:', UPLOAD_DIR);
 
 // Ensure upload directory exists
 if (!fs.existsSync(UPLOAD_DIR)) {

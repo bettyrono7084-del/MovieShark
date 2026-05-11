@@ -4,6 +4,11 @@ const { allAsync, getAsync, runAsync } = require('../db/init');
 const fs = require('fs');
 const path = require('path');
 
+// Use environment variable for upload directory (Railway Volume or local)
+const UPLOAD_DIR = process.env.UPLOAD_DIR 
+  ? path.resolve(process.env.UPLOAD_DIR)
+  : path.join(__dirname, '../../uploads');
+
 // Get all movies
 router.get('/', async (req, res) => {
   try {

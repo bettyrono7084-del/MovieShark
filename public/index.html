@@ -493,11 +493,7 @@
     <!-- STREAM PLAYER -->
     <div class="stream-section" id="streamSection">
       <div class="player-box">
-        <div class="player-placeholder">
-          <div class="play-ring">▶</div>
-          <p>Now streaming <strong id="streamLabel"></strong></p>
-          <small style="opacity:0.5">Video source from admin upload</small>
-        </div>
+        <video id="videoPlayer" controls style="width:100%; height:100%;"></video>
       </div>
     </div>
 
@@ -623,6 +619,8 @@
 
   function openStream() {
     if (currentMovie && currentMovie.videoFile) {
+      const videoPlayer = document.getElementById('videoPlayer');
+      videoPlayer.src = `${API_BASE}/movies/${currentMovie.id}/stream`;
       document.getElementById('streamSection').classList.add('open');
       document.getElementById('dlSection').classList.remove('open');
       toast('▶ Streaming "' + currentMovie.title + '"');
