@@ -69,15 +69,26 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/stream', async (req, res) => {
   try {
     const movie = await getAsync('SELECT * FROM movies WHERE id = ?', [req.params.id]);
-    if (!movie || !movie.videoFile) {
-      return res.status(404).json({ error: 'Movie or video file not found' });
+    if (!movie) {
+      console.warn(`Stream request for movie ${req.params.id} - movie not found`);
+      return res.status(404).json({ error: 'Movie not found' });
     }
 
-    const videoPath = path.join(__dirname, '../../uploads', movie.videoFile);
+    if (!movie.videoFile) {
+      console.warn(`Stream request for "${movie.title}" - no videoFile. Only custom uploaded videos can be streamed.`);
+      return res.status(404).json({ error: 'This movie has no video file. Only custom uploaded movies can be streamed.' });
+    }
+
+    const videoPath = path.join(UPLOAD_DIR, movie.videoFile);
+    console.log(`Stream requested for: ${movie.title} (${movie.videoFile})`);
+    console.log(`Looking for file at: ${videoPath}`);
     
     if (!fs.existsSync(videoPath)) {
-      return res.status(404).json({ error: 'Video file not found on disk' });
+      console.error(`Video file not found: ${videoPath}`);
+      return res.status(404).json({ error: 'Video file not found on disk. Please re-upload.' });
     }
+
+    console.log(`✓ Streaming: ${videoPath}`);
 
     const stat = fs.statSync(videoPath);
     const fileSize = stat.size;
@@ -114,22 +125,31 @@ router.get('/:id/stream', async (req, res) => {
 router.get('/:id/download', async (req, res) => {
   try {
     const movie = await getAsync('SELECT * FROM movies WHERE id = ?', [req.params.id]);
-    if (!movie || !movie.videoFile) {
-      return res.status(404).json({ error: 'Movie or video file not found' });
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
     }
 
-    const videoPath = path.join(__dirname, '../../uploads', movie.videoFile);
+    if (!movie.videoFile) {
+      console.warn(`Download request for "${movie.title}" - no videoFile. Only custom uploaded videos can be downloaded.`);
+      return res.status(404).json({ error: 'This movie has no video file. Only custom uploaded movies can be downloaded.' });
+    }
+
+    const videoPath = path.join(UPLOAD_DIR, movie.videoFile);
+    console.log(`Download requested for: ${movie.title}`);
     
     if (!fs.existsSync(videoPath)) {
-      return res.status(404).json({ error: 'Video file not found on disk' });
+      console.error(`Download: Video file not found at ${videoPath}`);
+      return res.status(404).json({ error: 'Video file not found on disk. Please re-upload.' });
     }
 
+    console.log(`✓ Downloading: ${videoPath}`);
     res.download(videoPath, `${movie.title}.mp4`, (err) => {
       if (err && err.code !== 'ERR_HTTP_HEADERS_SENT') {
         console.error('Download error:', err);
       }
     });
   } catch (err) {
+    console.error('Download error:', err);
     res.status(500).json({ error: err.message });
   }
 });

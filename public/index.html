@@ -574,8 +574,9 @@
     // Parse tags from comma-separated string
     grid.innerHTML = filtered.map(m => {
       const tags = m.tags ? m.tags.split(',').map(t => t.trim()) : [];
+      const hasVideo = m.videoFile ? '✓' : '○';
       return `
-        <div class="movie-card" onclick="openModal(${m.id})">
+        <div class="movie-card" onclick="openModal(${m.id})" title="${m.videoFile ? 'Has video file' : 'Demo - no video file'}">
           <div class="card-poster">${m.emoji || '🎬'}</div>
           ${m.badge ? `<span class="card-badge">${m.badge}</span>` : ''}
           ${m.quality ? `<span class="card-quality">${m.quality}</span>` : ''}
@@ -587,8 +588,8 @@
             </div>
           </div>
           <div class="card-actions">
-            <button class="btn-stream" onclick="event.stopPropagation();quickStream(${m.id})">▶ Stream</button>
-            <button class="btn-dl" onclick="event.stopPropagation();openModal(${m.id});setTimeout(openDL,200)">⬇ DL</button>
+            <button class="btn-stream" onclick="event.stopPropagation();quickStream(${m.id})" title="${m.videoFile ? 'Stream video' : 'No video available'}">${hasVideo} Stream</button>
+            <button class="btn-dl" onclick="event.stopPropagation();openModal(${m.id});setTimeout(openDL,200)" title="${m.videoFile ? 'Download video' : 'No video available'}">${hasVideo} DL</button>
           </div>
         </div>
       `;
@@ -624,8 +625,8 @@
       document.getElementById('streamSection').classList.add('open');
       document.getElementById('dlSection').classList.remove('open');
       toast('▶ Streaming "' + currentMovie.title + '"');
-    } else {
-      toast('⚠️ No video file available for this movie.');
+    } else if (currentMovie) {
+      toast('⚠️ No video file available. This is a demo movie. Upload videos in the admin panel to stream.');
     }
   }
 
@@ -633,8 +634,8 @@
     if (currentMovie && currentMovie.videoFile) {
       document.getElementById('dlSection').classList.add('open');
       document.getElementById('streamSection').classList.remove('open');
-    } else {
-      toast('⚠️ No download available for this movie.');
+    } else if (currentMovie) {
+      toast('⚠️ No download available. This is a demo movie. Upload videos in the admin panel to download.');
     }
   }
 

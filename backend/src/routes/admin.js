@@ -111,6 +111,14 @@ router.post('/upload', authenticateToken, upload.single('videoFile'), async (req
       return res.status(400).json({ error: 'Missing required fields: title, year, genre, description' });
     }
 
+    if (!req.file) {
+      return res.status(400).json({ error: 'No video file uploaded' });
+    }
+
+    console.log(`Uploading video: ${title}`);
+    console.log(`File saved to: ${req.file.path}`);
+    console.log(`Stored filename: ${req.file.filename}`);
+
     // Split tags
     const tagArray = tags ? tags.split(',').map(t => t.trim()).join(',') : '';
 
@@ -132,6 +140,8 @@ router.post('/upload', authenticateToken, upload.single('videoFile'), async (req
       ]
     );
 
+    console.log(`✓ Movie uploaded with ID: ${result.lastID}`);
+
     res.json({
       success: true,
       message: 'Movie uploaded successfully',
@@ -143,6 +153,7 @@ router.post('/upload', authenticateToken, upload.single('videoFile'), async (req
         fs.unlinkSync(req.file.path);
       } catch (e) {}
     }
+    console.error('Upload error:', err);
     res.status(500).json({ error: err.message });
   }
 });
