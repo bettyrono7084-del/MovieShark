@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="MovieShark: Stream and download thousands of movies in HD and 4K for free. Dive into an ocean of cinema with no limits, no hassle."/>
+  <meta name="keywords" content="movies, stream movies, download movies, free movies, watch movies, HD movies, 4K movies, MovieShark"/>
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://movieshark.example.com/">
+  <meta property="og:title" content="MovieShark – Stream & Download">
+  <meta property="og:description" content="Dive into an ocean of cinema. Stream and download thousands of movies in HD and 4K for free.">
+  <meta property="og:image" content="https://movieshark.example.com/images/og-preview.jpg">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://movieshark.example.com/">
+  <meta name="twitter:title" content="MovieShark – Stream & Download">
+  <meta name="twitter:description" content="Dive into an ocean of cinema. Stream and download thousands of movies in HD and 4K for free.">
+  <meta name="twitter:image" content="https://movieshark.example.com/images/og-preview.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="/icon/favicon.svg">
+  <title>MovieShark – Stream & Download</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080a0f;
+      --surface: #0e1117;
+      --card: #131720;
+      --border: #1e2535;
+      --accent: #e8b84b;
+      --accent2: #ff4d6d;
+      --text: #e8eaf0;
+      --muted: #6b7492;
+      --shark: #1a2540;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,184,75,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 85% 90%, rgba(255,77,109,0.04) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 64px;
+      background: rgba(8,10,15,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 0.1em;
+      color: var(--accent); text-decoration: none;
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .logo span { color: var(--accent2); }
+
+    .nav-right { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-right a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-right a:hover { color: var(--text); }
+
+    .btn-outline {
+      background: transparent; border: 1px solid var(--accent);
+      color: var(--accent); padding: 0.4rem 1.1rem; border-radius: 4px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s; text-decoration: none !important;
+    }
+    .btn-outline:hover { background: var(--accent); color: #080a0f; }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      padding: 6rem 2.5rem 3.5rem; text-align: center;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    }
+    .eyebrow::before, .eyebrow::after {
+      content: ''; width: 40px; height: 1px; background: var(--accent); opacity: 0.4;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      letter-spacing: 0.04em; line-height: 0.93; margin-bottom: 1.25rem;
+    }
+    .hero h1 em {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; color: var(--accent); display: block;
+    }
+
+    .hero-sub {
+      color: var(--muted); font-size: 1rem; max-width: 460px;
+      margin: 0 auto 2.5rem; line-height: 1.75;
+    }
+
+    /* SEARCH */
+    .search-wrap { max-width: 620px; margin: 0 auto; position: relative; }
+    .search-wrap input {
+      width: 100%; padding: 1rem 5.5rem 1rem 1.6rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(232,184,75,0.12);
+    }
+    .search-wrap input::placeholder { color: var(--muted); }
+    .search-btn {
+      position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);
+      background: var(--accent); border: none; border-radius: 6px;
+      padding: 0.58rem 1.3rem;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 0.06em;
+      color: #080a0f; cursor: pointer; transition: opacity 0.2s;
+    }
+    .search-btn:hover { opacity: 0.82; }
+
+    /* FILTER TAGS */
+    .filters {
+      display: flex; gap: 0.55rem; justify-content: center; flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+    .tag {
+      padding: 0.3rem 0.9rem; border: 1px solid var(--border);
+      border-radius: 999px; font-size: 0.78rem; font-weight: 500; color: var(--muted);
+      cursor: pointer; transition: all 0.2s; background: transparent;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tag:hover, .tag.active { border-color: var(--accent); color: var(--accent); background: rgba(232,184,75,0.06); }
+
+    /* SECTION HEADER */
+    .sec-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding: 0 2.5rem; margin-bottom: 1.4rem;
+      position: relative; z-index: 1;
+    }
+    .sec-header h2 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; letter-spacing: 0.08em;
+    }
+    .sec-header h2 span { color: var(--accent); }
+    .sec-header a { color: var(--muted); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; }
+    .sec-header a:hover { color: var(--accent); }
+
+    /* MOVIE GRID */
+    .movies-section { padding: 1rem 2.5rem 3rem; position: relative; z-index: 1; }
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      gap: 1.2rem;
+    }
+
+    /* MOVIE CARD */
+    .movie-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      cursor: pointer; position: relative;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .movie-card:hover {
+      transform: translateY(-7px);
+      border-color: rgba(232,184,75,0.5);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(232,184,75,0.15);
+    }
+
+    .card-poster {
+      width: 100%; aspect-ratio: 2/3;
+      background: linear-gradient(160deg, var(--shark) 0%, #0a0f1a 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem; position: relative; overflow: hidden;
+    }
+    .card-poster::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,10,15,0.7) 0%, transparent 50%);
+    }
+
+    .card-badge {
+      position: absolute; top: 0.55rem; left: 0.55rem;
+      background: var(--accent2); color: #fff;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      padding: 0.18rem 0.5rem; border-radius: 3px; text-transform: uppercase; z-index: 1;
+    }
+    .card-quality {
+      position: absolute; top: 0.55rem; right: 0.55rem;
+      background: rgba(0,0,0,0.75); color: var(--accent);
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.05em;
+      padding: 0.18rem 0.5rem; border-radius: 3px;
+      border: 1px solid rgba(232,184,75,0.4); z-index: 1;
+    }
+
+    .card-body { padding: 0.7rem; }
+    .card-title {
+      font-weight: 600; font-size: 0.875rem; margin-bottom: 0.3rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .card-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.75rem; color: var(--muted);
+    }
+    .card-rating { color: var(--accent); font-weight: 600; }
+
+    .card-actions { display: flex; gap: 0.4rem; padding: 0 0.7rem 0.7rem; }
+    .btn-stream, .btn-dl {
+      flex: 1; padding: 0.45rem; border-radius: 5px; border: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em;
+    }
+    .btn-stream { background: var(--accent); color: #080a0f; }
+    .btn-dl { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+    .btn-stream:hover { opacity: 0.82; }
+    .btn-dl:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    /* NO RESULTS */
+    .no-results { text-align: center; padding: 5rem 1rem; color: var(--muted); display: none; }
+    .no-results.show { display: block; }
+    .no-results .nr-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .no-results h3 { color: var(--text); margin-bottom: 0.5rem; font-size: 1.2rem; }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex; gap: 2rem; justify-content: center;
+      padding: 1.5rem 2.5rem; position: relative; z-index: 1;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--accent); letter-spacing: 0.05em; }
+    .stat-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: none; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; max-width: 780px; width: 100%;
+      max-height: 90vh; overflow-y: auto; position: relative;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(28px); opacity: 0; }
+      to   { transform: translateY(0);   opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: rgba(255,255,255,0.07); border: none; color: var(--text);
+      width: 36px; height: 36px; border-radius: 50%;
+      cursor: pointer; z-index: 2; display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.14); }
+
+    .modal-top {
+      display: flex; gap: 1.75rem; padding: 1.75rem 1.75rem 0;
+    }
+    .m-poster {
+      width: 155px; flex-shrink: 0; border-radius: 8px; overflow: hidden;
+      background: linear-gradient(160deg, var(--shark), #080a0f);
+      aspect-ratio: 2/3;
+      display: flex; align-items: center; justify-content: center; font-size: 4rem;
+    }
+    .m-info { flex: 1; }
+    .m-info h2 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 2.1rem; letter-spacing: 0.04em; margin-bottom: 0.5rem;
+    }
+    .m-tags { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+    .m-tag {
+      background: var(--shark); border: 1px solid var(--border); color: var(--muted);
+      font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 4px;
+    }
+    .m-desc { color: var(--muted); font-size: 0.875rem; line-height: 1.75; margin-bottom: 1.3rem; }
+    .m-rating { font-size: 1.5rem; color: var(--accent); font-weight: 700; margin-bottom: 1rem; }
+    .m-rating small { font-size: 0.85rem; color: var(--muted); font-weight: 400; }
+
+    .m-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; padding-bottom: 1.5rem; }
+    .btn-big {
+      padding: 0.8rem 1.8rem; border-radius: 8px; border: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.45rem;
+    }
+    .btn-big-gold { background: var(--accent); color: #080a0f; }
+    .btn-big-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-big-gold:hover { opacity: 0.82; }
+    .btn-big-ghost:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    /* STREAM PLAYER */
+    .stream-section { padding: 0 1.75rem 1.75rem; display: none; }
+    .stream-section.open { display: block; }
+    .player-box {
+      background: #000; border-radius: 10px; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); overflow: hidden; position: relative;
+    }
+    .player-placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      color: var(--muted); font-size: 0.875rem; text-align: center;
+    }
+    .play-ring {
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; background: rgba(232,184,75,0.1);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(232,184,75,0.4); }
+      50% { box-shadow: 0 0 0 16px rgba(232,184,75,0); }
+    }
+
+    /* DOWNLOAD PANEL */
+    .dl-section { padding: 0 1.75rem 1.75rem; display: none; }
+    .dl-section.open { display: block; }
+    .dl-title {
+      font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.1em; margin-bottom: 0.75rem;
+      font-size: 1.2rem;
+    }
+    .dl-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.5rem;
+      transition: border-color 0.2s;
+    }
+    .dl-row:hover { border-color: var(--accent); }
+    .dl-left { display: flex; align-items: center; gap: 0.9rem; }
+    .dl-q { font-weight: 700; font-size: 1rem; color: var(--accent); }
+    .dl-i { font-size: 0.78rem; color: var(--muted); }
+    .dl-btn {
+      background: var(--shark); border: 1px solid var(--border); color: var(--text);
+      padding: 0.4rem 1rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; transition: all 0.2s;
+    }
+    .dl-btn:hover { background: var(--accent); color: #080a0f; border-color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      margin-top: 3rem; border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative; z-index: 1; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--accent); letter-spacing: 0.1em;
+    }
+    .footer-logo span { color: var(--accent2); }
+    footer p { color: var(--muted); font-size: 0.78rem; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+      background: var(--card); border: 1px solid var(--accent);
+      border-radius: 8px; padding: 0.85rem 1.3rem;
+      font-size: 0.875rem; display: flex; align-items: center; gap: 0.6rem;
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.3s; pointer-events: none;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+
+    @media (max-width: 620px) {
+      nav { padding: 0 1rem; }
+      .hero { padding: 3.5rem 1rem 2.5rem; }
+      .movies-section { padding: 1rem 1rem 3rem; }
+      .sec-header { padding: 0 1rem; }
+      .modal-top { flex-direction: column; }
+      .m-poster { width: 100%; max-width: 200px; margin: 0 auto; }
+      footer { padding: 1.5rem 1rem; }
+      .stats-bar { gap: 1rem; padding: 1.25rem 1rem; }
+      .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+      gap: 1.2rem;
+    }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="index.html">Movie<span>Shark</span> 🦈</a>
+  <div class="nav-right">
+    <a href="#">Trending</a>
+    <a href="#">Genres</a>
+    <a href="admin.html" class="btn-outline">Admin Panel</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">🎬 Stream &amp; Download Free</div>
+  <h1>The Ocean<em>of Cinema</em></h1>
+  <p class="hero-sub">Dive into thousands of movies. Stream instantly or download in HD — no limits, no hassle.</p>
+
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search movie title…" autocomplete="off"/>
+    <button class="search-btn" onclick="doSearch()">SEARCH</button>
+  </div>
+
+  <div class="filters">
+    <button class="tag active" onclick="filterGenre('all',this)">All</button>
+    <button class="tag" onclick="filterGenre('action',this)">Action</button>
+    <button class="tag" onclick="filterGenre('drama',this)">Drama</button>
+    <button class="tag" onclick="filterGenre('comedy',this)">Comedy</button>
+    <button class="tag" onclick="filterGenre('horror',this)">Horror</button>
+    <button class="tag" onclick="filterGenre('sci-fi',this)">Sci-Fi</button>
+    <button class="tag" onclick="filterGenre('thriller',this)">Thriller</button>
+    <button class="tag" onclick="filterGenre('romance',this)">Romance</button>
+    <button class="tag" onclick="filterGenre('animation',this)">Animation</button>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num" id="statMovies">0</div><div class="stat-label">Movies</div></div>
+  <div class="stat"><div class="stat-num">4K</div><div class="stat-label">Max Quality</div></div>
+  <div class="stat"><div class="stat-num">FREE</div><div class="stat-label">Always</div></div>
+  <div class="stat"><div class="stat-num">HD</div><div class="stat-label">Downloads</div></div>
+</div>
+
+<!-- MOVIE SECTION -->
+<div class="sec-header">
+  <h2>Now <span>Trending</span></h2>
+  <a href="#">View all →</a>
+</div>
+
+<section class="movies-section">
+  <div class="movie-grid" id="movieGrid"></div>
+  <div class="no-results" id="noResults">
+    <div class="nr-icon">🦈</div>
+    <h3>No movies found</h3>
+    <p>Try a different title or browse by genre.</p>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOut(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+
+    <div class="modal-top">
+      <div class="m-poster" id="mPoster"></div>
+      <div class="m-info">
+        <h2 id="mTitle">—</h2>
+        <div class="m-rating" id="mRating"></div>
+        <div class="m-tags" id="mTags"></div>
+        <p class="m-desc" id="mDesc"></p>
+        <div class="m-cta">
+          <button class="btn-big btn-big-gold" onclick="openStream()">▶ Stream Now</button>
+          <button class="btn-big btn-big-ghost" onclick="openDL()">⬇ Download</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STREAM PLAYER -->
+    <div class="stream-section" id="streamSection">
+      <div class="player-box">
+        <div class="player-placeholder">
+          <div class="play-ring">▶</div>
+          <p>Now streaming <strong id="streamLabel"></strong></p>
+          <small style="opacity:0.5">Video source from admin upload</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOWNLOAD PANEL -->
+    <div class="dl-section" id="dlSection">
+      <p class="dl-title">Choose Download Quality</p>
+      <div class="dl-row">
+        <div class="dl-left"><span class="dl-q">4K UHD</span><span class="dl-i">2160p · ~12 GB · HEVC</span></div>
+        <button class="dl-btn" onclick="doDownload('4K UHD')">Download</button>
+      </div>
+      <div class="dl-row">
+        <div class="dl-left"><span class="dl-q">1080p</span><span class="dl-i">Full HD · ~4 GB · H.264</span></div>
+        <button class="dl-btn" onclick="doDownload('1080p')">Download</button>
+      </div>
+      <div class="dl-row">
+        <div class="dl-left"><span class="dl-q">720p</span><span class="dl-i">HD · ~1.8 GB · H.264</span></div>
+        <button class="dl-btn" onclick="doDownload('720p')">Download</button>
+      </div>
+      <div class="dl-row">
+        <div class="dl-left"><span class="dl-q">480p</span><span class="dl-i">SD · ~700 MB · H.264</span></div>
+        <button class="dl-btn" onclick="doDownload('480p')">Download</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Movie<span>Shark</span> 🦈</div>
+  <p>© 2025 MovieShark. For demonstration purposes only.</p>
+  <p>Built for cinephiles worldwide</p>
+</footer>
+
+<script>
+  /* ─── API CONFIGURATION ─── */
+  const API_BASE = '/api';
+  let allMovies = [];
+  let activeGenre = 'all';
+  let searchTerm = '';
+  let currentMovie = null;
+
+  /* ─── FETCH MOVIES FROM API ─── */
+  async function loadMovies() {
+    try {
+      const response = await fetch(`${API_BASE}/movies`);
+      if (!response.ok) throw new Error('Failed to fetch movies');
+      allMovies = await response.json();
+      renderMovies();
+    } catch (err) {
+      console.error('Error loading movies:', err);
+      toast('⚠️ Failed to load movies. Please refresh.');
+    }
+  }
+
+  function renderMovies() {
+    document.getElementById('statMovies').textContent = allMovies.length;
+
+    const filtered = allMovies.filter(m => {
+      const gMatch = activeGenre === 'all' || m.genre === activeGenre;
+      const sMatch = !searchTerm || m.title.toLowerCase().includes(searchTerm.toLowerCase());
+      return gMatch && sMatch;
+    });
+
+    const grid = document.getElementById('movieGrid');
+    const nr = document.getElementById('noResults');
+
+    if (!filtered.length) {
+      grid.innerHTML = '';
+      nr.classList.add('show');
+      return;
+    }
+    nr.classList.remove('show');
+
+    // Parse tags from comma-separated string
+    grid.innerHTML = filtered.map(m => {
+      const tags = m.tags ? m.tags.split(',').map(t => t.trim()) : [];
+      return `
+        <div class="movie-card" onclick="openModal(${m.id})">
+          <div class="card-poster">${m.emoji || '🎬'}</div>
+          ${m.badge ? `<span class="card-badge">${m.badge}</span>` : ''}
+          ${m.quality ? `<span class="card-quality">${m.quality}</span>` : ''}
+          <div class="card-body">
+            <div class="card-title">${m.title}</div>
+            <div class="card-meta">
+              <span>${m.year}</span>
+              <span class="card-rating">★ ${m.rating || '—'}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-stream" onclick="event.stopPropagation();quickStream(${m.id})">▶ Stream</button>
+            <button class="btn-dl" onclick="event.stopPropagation();openModal(${m.id});setTimeout(openDL,200)">⬇ DL</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function openModal(id) {
+    currentMovie = allMovies.find(m => m.id == id);
+    if (!currentMovie) return;
+
+    const tags = currentMovie.tags ? currentMovie.tags.split(',').map(t => t.trim()) : [];
+
+    document.getElementById('mTitle').textContent = currentMovie.title;
+    document.getElementById('mRating').innerHTML = `★ ${currentMovie.rating || '—'} <small>/10</small>`;
+    document.getElementById('mDesc').textContent = currentMovie.description || 'No description available.';
+    document.getElementById('streamLabel').textContent = currentMovie.title;
+    document.getElementById('mPoster').textContent = currentMovie.emoji || '🎬';
+
+    document.getElementById('mTags').innerHTML = tags
+      .map(t => `<span class="m-tag">${t}</span>`).join('');
+
+    document.getElementById('streamSection').classList.remove('open');
+    document.getElementById('dlSection').classList.remove('open');
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+  function closeOut(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+  function openStream() {
+    if (currentMovie && currentMovie.videoFile) {
+      document.getElementById('streamSection').classList.add('open');
+      document.getElementById('dlSection').classList.remove('open');
+      toast('▶ Streaming "' + currentMovie.title + '"');
+    } else {
+      toast('⚠️ No video file available for this movie.');
+    }
+  }
+
+  function openDL() {
+    if (currentMovie && currentMovie.videoFile) {
+      document.getElementById('dlSection').classList.add('open');
+      document.getElementById('streamSection').classList.remove('open');
+    } else {
+      toast('⚠️ No download available for this movie.');
+    }
+  }
+
+  function quickStream(id) { openModal(id); setTimeout(openStream, 250); }
+
+  function doDownload(q) {
+    if (currentMovie) {
+      const link = document.createElement('a');
+      link.href = `${API_BASE}/movies/${currentMovie.id}/download`;
+      link.download = `${currentMovie.title}.mp4`;
+      link.click();
+      toast('⬇ Download started: ' + currentMovie.title);
+    }
+  }
+
+  function doSearch() {
+    searchTerm = document.getElementById('searchInput').value.trim();
+    renderMovies();
+  }
+
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  function filterGenre(genre, el) {
+    activeGenre = genre;
+    document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    renderMovies();
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+  }
+
+  // Load movies on page load
+  loadMovies();
+</script>
+</body>
+</html>

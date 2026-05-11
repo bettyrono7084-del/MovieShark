@@ -12,8 +12,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Serve static files from public directory (frontend)
-app.use(express.static(path.join(__dirname, '../../')));
+// Serve static files from root directory (frontend files in parent directory)
+const rootPath = path.resolve(__dirname, '../../');
+console.log('Serving static files from:', rootPath);
+app.use(express.static(rootPath));
 
 // Routes
 const moviesRouter = require('./routes/movies');
@@ -24,12 +26,16 @@ app.use('/api/admin', adminRouter);
 
 // Serve index.html for root path
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../index.html'));
+  const indexPath = path.join(rootPath, 'index.html');
+  console.log('Sending index.html from:', indexPath);
+  res.sendFile(indexPath);
 });
 
 // Serve admin.html
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../admin.html'));
+  const adminPath = path.join(rootPath, 'admin.html');
+  console.log('Sending admin.html from:', adminPath);
+  res.sendFile(adminPath);
 });
 
 // Health check
