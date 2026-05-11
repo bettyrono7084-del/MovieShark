@@ -13,9 +13,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Get root path - working directory should be /app/backend on Railway or project root locally
-// __dirname is /app/backend/src, so go up 2 levels to /app
-const rootPath = path.resolve(__dirname, '../../');
+// Get root path
+// Locally: __dirname is backend/src, so go up 2 levels to root
+// Railway: __dirname is /app/src, so go up 1 level to /app
+// Use __dirname/../.. first, fallback to __dirname/.. if files not found
+let rootPath = path.resolve(__dirname, '../../');
+if (!fs.existsSync(path.join(rootPath, 'index.html'))) {
+  rootPath = path.resolve(__dirname, '../');
+}
 const indexPath = path.join(rootPath, 'index.html');
 const adminPath = path.join(rootPath, 'admin.html');
 
