@@ -1,4 +1,4 @@
 ﻿
 git add
-git commit -m "Update on $(date +'%Y-%m-%d %H:%M:%S')"
+git commit -m
 git push origin main

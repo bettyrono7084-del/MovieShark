@@ -108,7 +108,7 @@ MAX_FILE_SIZE=5000000000           # Max upload size (5GB)
 ```
 
 ## API Endpoints
-
+[README.md](mobile/README.md)
 ### Public
 - `GET /api/movies` - List all movies
 - `GET /api/movies/:id` - Get movie details

@@ -1,0 +1,3 @@
+   cd mobile
+   npm install
+   

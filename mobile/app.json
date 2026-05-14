@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "MovieShark",
+    "slug": "movieshark",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTabletMode": true,
+      "bundleIdentifier": "com.movieshark.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.movieshark.app",
+      "permissions": [
+        "INTERNET",
+        "CHANGE_NETWORK_STATE",
+        "ACCESS_NETWORK_STATE"
+      ]
+    },
+    "web": {},
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
+  }
+}

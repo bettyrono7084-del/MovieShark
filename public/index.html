@@ -22,6 +22,9 @@
 
   <link rel="icon" type="image/svg+xml" href="/icon/favicon.svg">
   <title>MovieShark – Stream & Download</title>
+  <!-- Video.js Base CSS and Modern "City" Theme -->
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <link href="https://unpkg.com/@videojs/themes@1.0.1/dist/city/index.css" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet"/>
   <style>
@@ -80,6 +83,7 @@
     .nav-right a {
       color: var(--muted); text-decoration: none;
       font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em;
+      white-space: nowrap;
       transition: color 0.2s;
     }
     .nav-right a:hover { color: var(--text); }
@@ -237,6 +241,10 @@
     .btn-stream { background: var(--accent); color: #080a0f; }
     .btn-dl { background: transparent; border: 1px solid var(--border); color: var(--muted); }
     .btn-stream:hover { opacity: 0.82; }
+    .btn-watchlist {
+      background: transparent; border: 1px solid var(--border); color: var(--muted);
+      flex: 1; padding: 0.45rem; border-radius: 5px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em;
+    }
     .btn-dl:hover { border-color: var(--accent2); color: var(--accent2); }
 
     /* NO RESULTS */
@@ -317,6 +325,10 @@
     .btn-big-gold { background: var(--accent); color: #080a0f; }
     .btn-big-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
     .btn-big-gold:hover { opacity: 0.82; }
+    .btn-big-watchlist {
+      background: transparent; border: 1px solid var(--border); color: var(--text);
+      padding: 0.8rem 1.8rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.45rem;
+    }
     .btn-big-ghost:hover { border-color: var(--accent2); color: var(--accent2); }
 
     /* STREAM PLAYER */
@@ -404,7 +416,7 @@
 
     @media (max-width: 768px) {
       nav { padding: 0 1rem; }
-      .logo { font-size: 1.4rem; }
+      .logo { font-size: 1.4rem; gap: 0.2rem; }
       .logo img { height: 32px; }
       .nav-right { gap: 1rem; }
       .nav-right a { font-size: 0.75rem; }
@@ -431,13 +443,13 @@
       .sec-header h2 { font-size: 1.3rem; }
       
       .movies-section { padding: 1rem; }
-      .movie-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 1rem; }
+      .movie-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
       
       .movie-card { border-radius: 8px; }
       .card-body { padding: 0.6rem; }
       .card-title { font-size: 0.8rem; }
       .card-meta { font-size: 0.7rem; }
-      .card-actions { gap: 0.3rem; padding: 0 0.6rem 0.6rem; }
+      .card-actions { gap: 0.3rem; padding: 0 0.6rem 0.6rem; flex-wrap: wrap; }
       .btn-stream, .btn-dl { padding: 0.35rem; font-size: 0.7rem; }
       
       .modal { border-radius: 12px; }
@@ -446,7 +458,7 @@
       .m-info h2 { font-size: 1.8rem; margin-bottom: 0.75rem; }
       .m-rating { font-size: 1.3rem; }
       .m-desc { font-size: 0.8rem; line-height: 1.6; }
-      .m-cta { gap: 0.5rem; padding-bottom: 1rem; }
+      .m-cta { gap: 0.5rem; padding-bottom: 1rem; flex-wrap: wrap; }
       .btn-big { padding: 0.7rem 1.4rem; font-size: 0.85rem; }
       
       .stream-section { padding: 0 1.5rem 1.5rem; }
@@ -466,7 +478,7 @@
     @media (max-width: 480px) {
       nav { height: 56px; padding: 0 0.75rem; }
       .logo { font-size: 1.2rem; gap: 0.25rem; }
-      .logo img { height: 28px; }
+      .logo img { height: 28px; margin-right: 0; }
       .nav-right { gap: 0.75rem; }
       .nav-right a { font-size: 0.7rem; display: none; }
       .nav-right a:last-child { display: inline; }
@@ -494,7 +506,7 @@
       .sec-header a { display: none; }
       
       .movies-section { padding: 0.75rem; }
-      .movie-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 0.8rem; }
+      .movie-grid { grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
       
       .card-poster { font-size: 2.5rem; }
       .card-badge { font-size: 0.55rem; padding: 0.15rem 0.4rem; top: 0.4rem; left: 0.4rem; }
@@ -504,7 +516,7 @@
       .card-meta { gap: 0.3rem; }
       .card-rating { font-size: 0.65rem; }
       .card-actions { gap: 0.25rem; padding: 0 0.5rem 0.5rem; }
-      .btn-stream, .btn-dl { padding: 0.3rem; font-size: 0.65rem; border-radius: 4px; }
+      .btn-stream, .btn-dl, .btn-watchlist { padding: 0.3rem; font-size: 0.65rem; border-radius: 4px; }
       
       .modal-overlay { padding: 0.75rem; }
       .modal { max-height: 95vh; border-radius: 10px; }
@@ -541,12 +553,12 @@
     @media (max-width: 360px) {
       .hero h1 { font-size: 1.3rem; }
       .search-wrap { padding: 0; }
-      .search-wrap input { padding: 0.6rem 4rem 0.6rem 0.8rem; font-size: 0.85rem; }
-      .search-btn { font-size: 0.7rem; padding: 0.4rem 0.6rem; }
+      .search-wrap input { padding: 0.6rem 3.5rem 0.6rem 0.8rem; font-size: 0.85rem; }
+      .search-btn { font-size: 0.7rem; padding: 0.4rem 0.5rem; }
       .movie-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 0.6rem; }
       .movies-section { padding: 0.5rem; }
       .card-poster { font-size: 2rem; }
-      .btn-stream, .btn-dl { font-size: 0.6rem; padding: 0.25rem; }
+      .btn-stream, .btn-dl, .btn-watchlist { font-size: 0.6rem; padding: 0.25rem; }
     }
   </style>
 </head>
@@ -554,11 +566,12 @@
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="index.html"><img src="/assets/logo.svg" alt="MovieShark Logo" style="height: 40px; width: auto; margin-right: 8px; flex-shrink: 0;"> Movie<span>Shark</span></a>
-  <div class="nav-right">
-    <a href="#">Trending</a>
-    <a href="#">Genres</a>
-    <a href="admin.html" class="btn-outline">Admin Panel</a>
+  <a class="logo" href="index.html"><img src="icon/favicon.svg"  style="height: 40px; width: auto; margin-right: 8px; flex-shrink: 0;"> Movie<span>Shark</span></a>
+  <div class="nav-right" id="navAuthButtons">
+    <a href="#" onclick="showLoginRegisterModal('login')">Login</a>
+    <a href="#" onclick="showLoginRegisterModal('register')">Register</a>
+    <a href="#" id="myWatchlistLink" style="display:none;" onclick="filterGenre('watchlist', this)">My Watchlist</a>
+    <a href="#" id="logoutButton" style="display:none;" onclick="handleUserLogout()">Logout</a>
   </div>
 </nav>
 
@@ -609,6 +622,14 @@
   </div>
 </section>
 
+<!-- MY WATCHLIST SECTION -->
+<div class="sec-header" id="watchlistHeader" style="display:none;">
+  <h2>My <span>Watchlist</span></h2>
+</div>
+<section class="movies-section" id="watchlistSection" style="display:none;">
+  <div class="movie-grid" id="watchlistGrid"></div>
+</section>
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeOut(event)">
   <div class="modal">
@@ -623,6 +644,7 @@
         <p class="m-desc" id="mDesc"></p>
         <div class="m-cta">
           <button class="btn-big btn-big-gold" onclick="openStream()">▶ Stream Now</button>
+          <button class="btn-big btn-big-watchlist" id="modalWatchlistBtn" style="display:none;">🤍 Add to Watchlist</button>
           <button class="btn-big btn-big-ghost" onclick="openDL()">⬇ Download</button>
         </div>
       </div>
@@ -631,7 +653,9 @@
     <!-- STREAM PLAYER -->
     <div class="stream-section" id="streamSection">
       <div class="player-box">
-        <video id="videoPlayer" controls style="width:100%; height:100%;"></video>
+        <video id="videoPlayer" class="video-js vjs-big-play-centered vjs-theme-city" controls preload="auto" style="width:100%; height:100%;">
+          <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video</p>
+        </video>
       </div>
     </div>
 
@@ -658,13 +682,41 @@
   </div>
 </div>
 
+<!-- LOGIN/REGISTER MODAL -->
+<div class="modal-overlay" id="authModalOverlay" onclick="closeOutAuth(event)">
+  <div class="modal" style="max-width:450px;">
+    <button class="modal-close" onclick="closeAuthModal()">✕</button>
+    <div style="padding: 1.75rem;">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:2.1rem;letter-spacing:0.04em;margin-bottom:1.5rem;" id="authModalTitle">Login</h2>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div>
+          <label style="font-size:0.8rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:0.5rem;">Username</label>
+          <input type="text" id="authUsername" placeholder="Enter your username" style="width:100%;padding:0.75rem;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:'DM Sans',sans-serif;"/>
+        </div>
+        <div>
+          <label style="font-size:0.8rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:0.5rem;">Password</label>
+          <input type="password" id="authPassword" placeholder="••••••••" style="width:100%;padding:0.75rem;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:'DM Sans',sans-serif;"/>
+        </div>
+        <button id="authSubmitBtn" onclick="handleAuthSubmit()" style="background:var(--accent);border:none;color:#080a0f;padding:0.9rem;border-radius:6px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:0.5rem;">
+          Login
+        </button>
+        <p style="text-align:center;font-size:0.85rem;color:var(--muted);">
+          <span id="authToggleText">Don't have an account?</span>
+          <a href="#" onclick="toggleAuthMode(event)" style="color:var(--accent);text-decoration:none;font-weight:600;margin-left:0.3rem;">Register</a>
+        </p>
+        <div id="authError" style="color:var(--accent2);font-size:0.85rem;text-align:center;display:none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="toastMsg"></span></div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo"><img src="/assets/logo.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 8px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></div>
-  <p>© 2025 MovieShark. For demonstration purposes only.</p>
+  <div class="footer-logo"><img src="icon/favicon.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 8px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></div>
+  <p>© 2025 MovieShark. Enjoy your favorite Movies.</p>
   <p>Built for cinephiles worldwide</p>
 </footer>
 
@@ -675,6 +727,202 @@
   let activeGenre = 'all';
   let searchTerm = '';
   let currentMovie = null;
+  let player = null; // Video.js player instance
+
+  // User authentication state
+  let userToken = localStorage.getItem('user_token');
+  let currentUserId = localStorage.getItem('user_id');
+  let userWatchlist = []; // Stores movie_ids for the current user's watchlist
+  let authMode = 'login'; // 'login' or 'register'
+  let progressInterval = null;
+  let lastSavedPosition = 0;
+
+  // Note: Video.js library is loaded at the bottom of the body
+
+  /* ─── AUTHENTICATION FUNCTIONS ─── */
+  function checkAuthStatus() {
+    const loggedIn = !!userToken;
+    document.getElementById('navAuthButtons').innerHTML = loggedIn
+      ? `<a href="#" id="myWatchlistLink" onclick="filterGenre('watchlist', this)">My Watchlist</a>
+         <a href="#" id="logoutButton" onclick="handleUserLogout()">Logout</a>`
+      : `<a href="#" onclick="showLoginRegisterModal('login')">Login</a>
+         <a href="#" onclick="showLoginRegisterModal('register')">Register</a>`;
+    
+    document.getElementById('watchlistHeader').style.display = loggedIn ? 'flex' : 'none';
+    document.getElementById('watchlistSection').style.display = loggedIn ? 'block' : 'none';
+    
+    if (loggedIn) {
+      loadUserWatchlist();
+    } else {
+      userWatchlist = [];
+      renderWatchlistSection(); // Clear watchlist display
+    }
+    renderMovies(); // Re-render movies to update watchlist buttons
+  }
+
+  function showLoginRegisterModal(mode) {
+    authMode = mode;
+    document.getElementById('authModalTitle').textContent = mode === 'login' ? 'Login' : 'Register';
+    document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Login' : 'Register';
+    document.getElementById('authToggleText').textContent = mode === 'login' ? "Don't have an account?" : "Already have an account?";
+    document.querySelector('#authModalOverlay a').textContent = mode === 'login' ? 'Register' : 'Login';
+    document.getElementById('authError').style.display = 'none';
+    document.getElementById('authUsername').value = '';
+    document.getElementById('authPassword').value = '';
+    document.getElementById('authModalOverlay').classList.add('open');
+  }
+
+  function closeAuthModal() {
+    document.getElementById('authModalOverlay').classList.remove('open');
+  }
+
+  function closeOutAuth(e) {
+    if (e.target === document.getElementById('authModalOverlay')) closeAuthModal();
+  }
+
+  function toggleAuthMode(e) {
+    e.preventDefault();
+    showLoginRegisterModal(authMode === 'login' ? 'register' : 'login');
+  }
+
+  async function handleAuthSubmit() {
+    const username = document.getElementById('authUsername').value.trim();
+    const password = document.getElementById('authPassword').value.trim();
+    const errorEl = document.getElementById('authError');
+    errorEl.style.display = 'none';
+
+    if (!username || !password) {
+      errorEl.textContent = 'Please enter both username and password.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    try {
+      const endpoint = authMode === 'login' ? '/auth/login' : '/auth/register';
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || 'Authentication failed.');
+      }
+
+      const data = await res.json();
+      userToken = data.token;
+      currentUserId = data.userId; // Assuming backend returns userId
+      localStorage.setItem('user_token', userToken);
+      localStorage.setItem('user_id', currentUserId);
+      
+      closeAuthModal();
+      toast(`✅ ${authMode === 'login' ? 'Logged in' : 'Registered'} successfully!`);
+      checkAuthStatus();
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.style.display = 'block';
+    }
+  }
+
+  function handleUserLogout() {
+    userToken = null;
+    currentUserId = null;
+    userWatchlist = [];
+    localStorage.removeItem('user_token');
+    localStorage.removeItem('user_id');
+    toast('👋 Logged out.');
+    checkAuthStatus();
+    filterGenre('all', document.querySelector('.filters .tag.active') || document.querySelector('.filters .tag')); // Reset filter to 'All'
+  }
+
+  /* ─── WATCHLIST FUNCTIONS ─── */
+  async function loadUserWatchlist() {
+    if (!userToken || !currentUserId) {
+      userWatchlist = [];
+      renderWatchlistSection();
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/user/${currentUserId}/watchlist`, {
+        headers: { 'Authorization': `Bearer ${userToken}` }
+      });
+      if (!res.ok) throw new Error('Failed to load watchlist');
+      userWatchlist = await res.json();
+      renderWatchlistSection();
+      renderMovies(); // Re-render main grid to update watchlist buttons
+    } catch (err) {
+      console.error('Error loading watchlist:', err);
+      toast('⚠️ Failed to load watchlist.', true);
+      userWatchlist = []; // Clear on error
+      renderWatchlistSection();
+    }
+  }
+
+  async function toggleWatchlist(movieId, isInWatchlist) {
+    if (!userToken) {
+      toast('⚠️ Please log in to manage your watchlist.', true);
+      showLoginRegisterModal('login');
+      return;
+    }
+
+    try {
+      const method = isInWatchlist ? 'DELETE' : 'POST';
+      const res = await fetch(`${API_BASE}/user/${currentUserId}/watchlist/${movieId}`, {
+        method: method,
+        headers: { 'Authorization': `Bearer ${userToken}` }
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || 'Failed to update watchlist.');
+      }
+
+      toast(`✅ Movie ${isInWatchlist ? 'removed from' : 'added to'} watchlist.`);
+      await loadUserWatchlist(); // Reload watchlist after update
+    } catch (err) {
+      console.error('Error toggling watchlist:', err);
+      toast('⚠️ ' + err.message, true);
+    }
+  }
+
+  function renderWatchlistSection() {
+    const watchlistGrid = document.getElementById('watchlistGrid');
+    const watchlistMovies = allMovies.filter(m => userWatchlist.some(item => item.movie_id === m.id));
+
+    if (!userToken || watchlistMovies.length === 0) {
+      document.getElementById('watchlistHeader').style.display = 'none';
+      document.getElementById('watchlistSection').style.display = 'none';
+      watchlistGrid.innerHTML = '';
+      return;
+    }
+
+    document.getElementById('watchlistHeader').style.display = 'flex';
+    document.getElementById('watchlistSection').style.display = 'block';
+
+    watchlistGrid.innerHTML = watchlistMovies.map(m => {
+      const posterContent = m.poster_url ? `<img src="${m.poster_url}" style="width:100%;height:100%;object-fit:cover;">` : (m.emoji || '🎬');
+      return `
+        <div class="movie-card" onclick="openModal(${m.id})">
+          <div class="card-poster">${posterContent}</div>
+          ${m.badge ? `<span class="card-badge">${m.badge}</span>` : ''}
+          ${m.quality ? `<span class="card-quality">${m.quality}</span>` : ''}
+          <div class="card-body">
+            <div class="card-title">${m.title}</div>
+            <div class="card-meta">
+              <span>${m.year}</span>
+              <span class="card-rating">★ ${m.rating || '—'}</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-stream" onclick="event.stopPropagation();quickStream(${m.id})">▶ Stream</button>
+            <button class="btn-dl" onclick="event.stopPropagation();openModal(${m.id});setTimeout(openDL,200)">⬇ DL</button>
+            <button class="btn-watchlist" onclick="event.stopPropagation();toggleWatchlist(${m.id}, true)">❤️ Watchlisted</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
 
   /* ─── FETCH MOVIES FROM API ─── */
   async function loadMovies() {
@@ -682,18 +930,24 @@
       const response = await fetch(`${API_BASE}/movies`);
       if (!response.ok) throw new Error('Failed to fetch movies');
       allMovies = await response.json();
+      checkAuthStatus(); // Check auth and load watchlist after movies are loaded
       renderMovies();
     } catch (err) {
       console.error('Error loading movies:', err);
-      toast('⚠️ Failed to load movies. Please refresh.');
+      toast('⚠️ Failed to load movies. Please refresh.', true);
     }
   }
 
   function renderMovies() {
     document.getElementById('statMovies').textContent = allMovies.length;
 
-    const filtered = allMovies.filter(m => {
-      const gMatch = activeGenre === 'all' || m.genre === activeGenre;
+    let moviesToRender = allMovies;
+    if (activeGenre === 'watchlist' && userToken) {
+      moviesToRender = allMovies.filter(m => userWatchlist.some(item => item.movie_id === m.id));
+    }
+
+    const filtered = moviesToRender.filter(m => {
+      const gMatch = activeGenre === 'all' || activeGenre === 'watchlist' || m.genre === activeGenre;
       const sMatch = !searchTerm || m.title.toLowerCase().includes(searchTerm.toLowerCase());
       return gMatch && sMatch;
     });
@@ -711,10 +965,12 @@
     // Parse tags from comma-separated string
     grid.innerHTML = filtered.map(m => {
       const tags = m.tags ? m.tags.split(',').map(t => t.trim()) : [];
-      const hasVideo = m.videoFile ? '✓' : '○';
+      const isInWatchlist = userWatchlist.some(item => item.movie_id === m.id);
+      const watchlistBtnText = isInWatchlist ? '❤️ Watchlisted' : '🤍 Watchlist';
+      const posterContent = m.poster_url ? `<img src="${m.poster_url}" style="width:100%;height:100%;object-fit:cover;">` : (m.emoji || '🎬');
       return `
         <div class="movie-card" onclick="openModal(${m.id})" title="${m.videoFile ? 'Has video file' : 'Demo - no video file'}">
-          <div class="card-poster">${m.emoji || '🎬'}</div>
+          <div class="card-poster">${posterContent}</div>
           ${m.badge ? `<span class="card-badge">${m.badge}</span>` : ''}
           ${m.quality ? `<span class="card-quality">${m.quality}</span>` : ''}
           <div class="card-body">
@@ -725,8 +981,9 @@
             </div>
           </div>
           <div class="card-actions">
-            <button class="btn-stream" onclick="event.stopPropagation();quickStream(${m.id})" title="${m.videoFile ? 'Stream video' : 'No video available'}">${hasVideo} Stream</button>
-            <button class="btn-dl" onclick="event.stopPropagation();openModal(${m.id});setTimeout(openDL,200)" title="${m.videoFile ? 'Download video' : 'No video available'}">${hasVideo} DL</button>
+            <button class="btn-stream" onclick="event.stopPropagation();quickStream(${m.id})" title="${m.videoFile ? 'Stream video' : 'No video available'}">▶ Stream</button>
+            <button class="btn-dl" onclick="event.stopPropagation();openModal(${m.id});setTimeout(openDL,200)" title="${m.videoFile ? 'Download video' : 'No video available'}">⬇ DL</button>
+            ${userToken ? `<button class="btn-watchlist" onclick="event.stopPropagation();toggleWatchlist(${m.id}, ${isInWatchlist})">${watchlistBtnText}</button>` : ''}
           </div>
         </div>
       `;
@@ -737,15 +994,24 @@
     currentMovie = allMovies.find(m => m.id == id);
     if (!currentMovie) return;
 
+    const isInWatchlist = userWatchlist.some(item => item.movie_id === currentMovie.id);
     const tags = currentMovie.tags ? currentMovie.tags.split(',').map(t => t.trim()) : [];
 
     document.getElementById('mTitle').textContent = currentMovie.title;
     document.getElementById('mRating').innerHTML = `★ ${currentMovie.rating || '—'} <small>/10</small>`;
     document.getElementById('mDesc').textContent = currentMovie.description || 'No description available.';
-    document.getElementById('mPoster').textContent = currentMovie.emoji || '🎬';
+    
+    if (currentMovie.poster_url) {
+      document.getElementById('mPoster').innerHTML = `<img src="${currentMovie.poster_url}" style="width:100%;height:100%;object-fit:cover;">`;
+    } else {
+      document.getElementById('mPoster').textContent = currentMovie.emoji || '🎬';
+    }
 
     document.getElementById('mTags').innerHTML = tags
       .map(t => `<span class="m-tag">${t}</span>`).join('');
+    document.getElementById('modalWatchlistBtn').style.display = userToken ? 'flex' : 'none';
+    document.getElementById('modalWatchlistBtn').innerHTML = isInWatchlist ? '❤️ Remove from Watchlist' : '🤍 Add to Watchlist';
+    document.getElementById('modalWatchlistBtn').onclick = () => toggleWatchlist(currentMovie.id, isInWatchlist);
 
     document.getElementById('streamSection').classList.remove('open');
     document.getElementById('dlSection').classList.remove('open');
@@ -763,7 +1029,7 @@
       document.getElementById('dlSection').classList.remove('open');
       toast('▶ Streaming "' + currentMovie.title + '"');
     } else if (currentMovie) {
-      toast('⚠️ No video file available. This is a demo movie. Upload videos in the admin panel to stream.');
+      toast('⚠️ No video file available. This is a demo movie. Upload videos in the admin panel to stream.', true);
     }
   }
 
@@ -772,7 +1038,7 @@
       document.getElementById('dlSection').classList.add('open');
       document.getElementById('streamSection').classList.remove('open');
     } else if (currentMovie) {
-      toast('⚠️ No download available. This is a demo movie. Upload videos in the admin panel to download.');
+      toast('⚠️ No download available. This is a demo movie. Upload videos in the admin panel to download.', true);
     }
   }
 
@@ -800,14 +1066,18 @@
   function filterGenre(genre, el) {
     activeGenre = genre;
     document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
+    if (el) el.classList.add('active');
     renderMovies();
+    if (genre === 'watchlist') {
+      renderWatchlistSection();
+    }
   }
 
   let toastTimer;
-  function toast(msg) {
+  function toast(msg, isError = false) {
     const el = document.getElementById('toast');
     document.getElementById('toastMsg').textContent = msg;
+    el.className = 'toast' + (isError ? ' error' : ''); // Add 'error' class for styling
     el.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
@@ -816,5 +1086,21 @@
   // Load movies on page load
   loadMovies();
 </script>
+
+<!-- Video.js Library -->
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
+</body>
+</html>
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><img src="assets/logo.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 8px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></div>
+  <p>© 2025 MovieShark. Enjoy your favorite Movies.</p>
+  <p>Built for cinephiles worldwide</p>
+</footer>
+
 </body>
 </html>

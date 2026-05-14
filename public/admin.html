@@ -380,7 +380,7 @@
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <a class="sidebar-logo" href="index.html"><img src="/assets/logo.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 6px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></a>
+  <a class="sidebar-logo" href="index.html"><img src="assets/logo.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 6px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></a>
 
   <p class="sidebar-label">Management</p>
   <nav class="sidebar-nav">
@@ -505,6 +505,10 @@
           <input type="text" id="upEmoji" placeholder="🎬 (1 emoji)"/>
         </div>
         <div class="form-group">
+          <label>Poster Image URL</label>
+          <input type="text" id="upPosterUrl" placeholder="https://image.tmdb.org/t/p/w500/..."/>
+        </div>
+        <div class="form-group">
           <label>Tags (comma-separated)</label>
           <input type="text" id="upTags" placeholder="Action, 2h 15m, Director Name"/>
         </div>
@@ -520,6 +524,10 @@
             <div class="dz-text"><strong>Click to upload</strong> or drag & drop video file</div>
             <div class="dz-text" style="margin-top:0.3rem;font-size:0.75rem;">MP4, MKV, AVI, MOV supported</div>
             <div class="dz-filename" id="dzFilename"></div>
+          </div>
+          <div style="margin-top: 1.5rem;">
+            <label>Subtitle File (.vtt preferred)</label>
+            <input type="file" id="upSubtitles" accept=".vtt,.srt" style="margin-top:0.5rem;"/>
           </div>
           <div class="progress-wrap" id="progressWrap">
             <div class="progress-bar-track">
@@ -722,6 +730,7 @@
     const genre = document.getElementById('upGenre').value;
     const desc = document.getElementById('upDesc').value.trim();
     const videoFile = document.getElementById('upFile').files[0];
+    const subtitleFile = document.getElementById('upSubtitles').files[0];
 
     if (!title || !year || !genre || !desc) {
       toast('⚠️ Please fill in all required fields.', true);
@@ -747,8 +756,10 @@
       formData.append('quality', document.getElementById('upQuality').value);
       formData.append('badge', document.getElementById('upBadge').value.trim());
       formData.append('emoji', document.getElementById('upEmoji').value.trim() || '🎬');
+      formData.append('poster_url', document.getElementById('upPosterUrl').value.trim());
       formData.append('tags', document.getElementById('upTags').value);
       if (videoFile) formData.append('videoFile', videoFile);
+      if (subtitleFile) formData.append('subtitleFile', subtitleFile);
 
       const xhr = new XMLHttpRequest();
 
@@ -775,6 +786,7 @@
           document.getElementById('upRating').value = '';
           document.getElementById('dzFilename').textContent = '';
           document.getElementById('upFile').value = '';
+          document.getElementById('upSubtitles').value = '';
 
           updateDash();
         } else {
