@@ -128,6 +128,20 @@
 
     /* SEARCH */
     .search-wrap { max-width: 620px; margin: 0 auto; position: relative; }
+    .search-suggestions {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: var(--card); border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 8px 8px; z-index: 10;
+      display: none; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .suggestion-item {
+      padding: 0.8rem 1.2rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      transition: background 0.2s; border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .suggestion-item:hover { background: rgba(232,184,75,0.1); }
+    .suggestion-item span { font-size: 0.9rem; font-weight: 500; }
+    .suggestion-item small { color: var(--muted); font-size: 0.75rem; }
+
     .search-wrap input {
       width: 100%; padding: 1rem 5.5rem 1rem 1.6rem;
       background: var(--card); border: 1px solid var(--border);
@@ -181,6 +195,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
       gap: 1.2rem;
+    
     }
 
     /* MOVIE CARD */
@@ -330,6 +345,36 @@
       padding: 0.8rem 1.8rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.45rem;
     }
     .btn-big-ghost:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    /* SKELETON LOADING */
+    .skeleton {
+      background: linear-gradient(90deg, var(--card) 25%, var(--shark) 50%, var(--card) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+    }
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .skeleton-card { aspect-ratio: 2/3; border-radius: 10px; margin-bottom: 0.7rem; }
+    .skeleton-text { height: 12px; border-radius: 4px; margin-bottom: 0.5rem; background: var(--border); }
+    .skeleton-text.short { width: 60%; }
+
+    /* MODAL BLUR BG */
+    .modal-bg {
+      position: absolute; inset: 0; z-index: -1;
+      background-size: cover; background-position: center;
+      filter: blur(40px) brightness(0.3); opacity: 0.5;
+      transition: background-image 0.5s ease;
+    }
+
+    .sort-select {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--muted); padding: 0.3rem 0.6rem; border-radius: 999px;
+      font-size: 0.78rem; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; outline: none; transition: all 0.2s;
+    }
+    .sort-select:hover { border-color: var(--accent); color: var(--text); }
 
     /* STREAM PLAYER */
     .stream-section { padding: 0 1.75rem 1.75rem; display: none; }
@@ -508,6 +553,7 @@
       .movies-section { padding: 0.75rem; }
       .movie-grid { grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
       
+      
       .card-poster { font-size: 2.5rem; }
       .card-badge { font-size: 0.55rem; padding: 0.15rem 0.4rem; top: 0.4rem; left: 0.4rem; }
       .card-quality { font-size: 0.55rem; padding: 0.15rem 0.4rem; top: 0.4rem; right: 0.4rem; }
@@ -555,7 +601,7 @@
       .search-wrap { padding: 0; }
       .search-wrap input { padding: 0.6rem 3.5rem 0.6rem 0.8rem; font-size: 0.85rem; }
       .search-btn { font-size: 0.7rem; padding: 0.4rem 0.5rem; }
-      .movie-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 0.6rem; }
+      .movie-grid { grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
       .movies-section { padding: 0.5rem; }
       .card-poster { font-size: 2rem; }
       .btn-stream, .btn-dl, .btn-watchlist { font-size: 0.6rem; padding: 0.25rem; }
@@ -582,8 +628,9 @@
   <p class="hero-sub">Dive into thousands of movies. Stream instantly or download in HD — no limits, no hassle.</p>
 
   <div class="search-wrap">
-    <input type="text" id="searchInput" placeholder="Search movie title…" autocomplete="off"/>
+    <input type="text" id="searchInput" placeholder="Search movie title…" autocomplete="off" oninput="handleSearchInput(event)"/>
     <button class="search-btn" onclick="doSearch()">SEARCH</button>
+    <div id="searchSuggestions" class="search-suggestions"></div>
   </div>
 
   <div class="filters">
@@ -596,6 +643,12 @@
     <button class="tag" onclick="filterGenre('thriller',this)">Thriller</button>
     <button class="tag" onclick="filterGenre('romance',this)">Romance</button>
     <button class="tag" onclick="filterGenre('animation',this)">Animation</button>
+    <select class="sort-select" onchange="handleSort(this.value)">
+      <option value="newest">Newest First</option>
+      <option value="rating">Top Rated</option>
+      <option value="title">A-Z</option>
+      <option value="year">Oldest First</option>
+    </select>
   </div>
 </section>
 
@@ -633,6 +686,7 @@
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeOut(event)">
   <div class="modal">
+    <div class="modal-bg" id="modalBg"></div>
     <button class="modal-close" onclick="closeModal()">✕</button>
 
     <div class="modal-top">
@@ -724,8 +778,10 @@
   /* ─── API CONFIGURATION ─── */
   const API_BASE = '/api';
   let allMovies = [];
+  let searchResults = []; // Store combined results from backend search
   let activeGenre = 'all';
   let searchTerm = '';
+  let sortBy = 'newest';
   let currentMovie = null;
   let player = null; // Video.js player instance
 
@@ -903,7 +959,7 @@
     watchlistGrid.innerHTML = watchlistMovies.map(m => {
       const posterContent = m.poster_url ? `<img src="${m.poster_url}" style="width:100%;height:100%;object-fit:cover;">` : (m.emoji || '🎬');
       return `
-        <div class="movie-card" onclick="openModal(${m.id})">
+        <div class="movie-card" onclick="openModal('${m.id}')">
           <div class="card-poster">${posterContent}</div>
           ${m.badge ? `<span class="card-badge">${m.badge}</span>` : ''}
           ${m.quality ? `<span class="card-quality">${m.quality}</span>` : ''}
@@ -915,8 +971,8 @@
             </div>
           </div>
           <div class="card-actions">
-            <button class="btn-stream" onclick="event.stopPropagation();quickStream(${m.id})">▶ Stream</button>
-            <button class="btn-dl" onclick="event.stopPropagation();openModal(${m.id});setTimeout(openDL,200)">⬇ DL</button>
+            <button class="btn-stream" onclick="event.stopPropagation();quickStream('${m.id}')">▶ Stream</button>
+            <button class="btn-dl" onclick="event.stopPropagation();openModal('${m.id}');setTimeout(openDL,200)">⬇ DL</button>
             <button class="btn-watchlist" onclick="event.stopPropagation();toggleWatchlist(${m.id}, true)">❤️ Watchlisted</button>
           </div>
         </div>
@@ -925,7 +981,23 @@
   }
 
   /* ─── FETCH MOVIES FROM API ─── */
+  function renderSkeletons() {
+    const grid = document.getElementById('movieGrid');
+    let skeletons = '';
+    for (let i = 0; i < 8; i++) {
+      skeletons += `
+        <div class="skeleton-item">
+          <div class="skeleton-card skeleton"></div>
+          <div class="skeleton-text skeleton"></div>
+          <div class="skeleton-text short skeleton"></div>
+        </div>
+      `;
+    }
+    grid.innerHTML = skeletons;
+  }
+
   async function loadMovies() {
+    renderSkeletons();
     try {
       const response = await fetch(`${API_BASE}/movies`);
       if (!response.ok) throw new Error('Failed to fetch movies');
@@ -941,15 +1013,24 @@
   function renderMovies() {
     document.getElementById('statMovies').textContent = allMovies.length;
 
-    let moviesToRender = allMovies;
+    let moviesToRender = searchTerm ? searchResults : allMovies;
+
     if (activeGenre === 'watchlist' && userToken) {
       moviesToRender = allMovies.filter(m => userWatchlist.some(item => item.movie_id === m.id));
     }
 
     const filtered = moviesToRender.filter(m => {
-      const gMatch = activeGenre === 'all' || activeGenre === 'watchlist' || m.genre === activeGenre;
+      const gMatch = activeGenre === 'all' || activeGenre === 'watchlist' || m.genre === activeGenre || m.is_external;
       const sMatch = !searchTerm || m.title.toLowerCase().includes(searchTerm.toLowerCase());
       return gMatch && sMatch;
+    });
+
+    // Sorting logic
+    filtered.sort((a, b) => {
+      if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
+      if (sortBy === 'title') return a.title.localeCompare(b.title);
+      if (sortBy === 'year') return a.year - b.year;
+      return (b.id || 0) - (a.id || 0); // newest (default)
     });
 
     const grid = document.getElementById('movieGrid');
@@ -968,10 +1049,20 @@
       const isInWatchlist = userWatchlist.some(item => item.movie_id === m.id);
       const watchlistBtnText = isInWatchlist ? '❤️ Watchlisted' : '🤍 Watchlist';
       const posterContent = m.poster_url ? `<img src="${m.poster_url}" style="width:100%;height:100%;object-fit:cover;">` : (m.emoji || '🎬');
+
+      const isExternal = m.is_external;
+      const actionBtns = isExternal ? `
+        <button class="btn-stream" style="grid-column: span 3; opacity: 0.6; cursor: not-allowed;" title="Available online - click to view details">ℹ️ Info Only</button>
+      ` : `
+        <button class="btn-stream" onclick="event.stopPropagation();quickStream('${m.id}')" title="${m.videoFile ? 'Stream video' : 'No video available'}">▶ Stream</button>
+        <button class="btn-dl" onclick="event.stopPropagation();openModal('${m.id}');setTimeout(openDL,200)" title="${m.videoFile ? 'Download video' : 'No video available'}">⬇ DL</button>
+        ${userToken ? `<button class="btn-watchlist" onclick="event.stopPropagation();toggleWatchlist(${m.id}, ${isInWatchlist})">${watchlistBtnText}</button>` : ''}
+      `;
+
       return `
-        <div class="movie-card" onclick="openModal(${m.id})" title="${m.videoFile ? 'Has video file' : 'Demo - no video file'}">
+        <div class="movie-card" onclick="openModal('${m.id}')" title="${m.videoFile ? 'Has video file' : isExternal ? 'Online Result' : 'Demo - no video file'}">
           <div class="card-poster">${posterContent}</div>
-          ${m.badge ? `<span class="card-badge">${m.badge}</span>` : ''}
+          ${m.badge ? `<span class="card-badge" style="${isExternal ? 'background:var(--accent2)' : ''}">${m.badge}</span>` : ''}
           ${m.quality ? `<span class="card-quality">${m.quality}</span>` : ''}
           <div class="card-body">
             <div class="card-title">${m.title}</div>
@@ -981,37 +1072,101 @@
             </div>
           </div>
           <div class="card-actions">
-            <button class="btn-stream" onclick="event.stopPropagation();quickStream(${m.id})" title="${m.videoFile ? 'Stream video' : 'No video available'}">▶ Stream</button>
-            <button class="btn-dl" onclick="event.stopPropagation();openModal(${m.id});setTimeout(openDL,200)" title="${m.videoFile ? 'Download video' : 'No video available'}">⬇ DL</button>
-            ${userToken ? `<button class="btn-watchlist" onclick="event.stopPropagation();toggleWatchlist(${m.id}, ${isInWatchlist})">${watchlistBtnText}</button>` : ''}
+            ${actionBtns}
           </div>
         </div>
       `;
     }).join('');
   }
 
+  /* ─── SEARCH & SUGGESTIONS ─── */
+  async function handleSearchInput(e) {
+    const query = e.target.value.trim();
+    const suggestionsBox = document.getElementById('searchSuggestions');
+
+    if (query.length < 2) {
+      suggestionsBox.innerHTML = '';
+      suggestionsBox.style.display = 'none';
+      return;
+    }
+
+    // Local filter for suggestions
+    const matches = allMovies.filter(m => m.title.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
+
+    if (matches.length > 0) {
+      suggestionsBox.innerHTML = matches.map(m => `
+        <div class="suggestion-item" onclick="selectSuggestion('${m.id}')">
+          <span>${m.title}</span>
+          <small>${m.year}</small>
+        </div>
+      `).join('');
+      suggestionsBox.style.display = 'block';
+    } else {
+      suggestionsBox.style.display = 'none';
+    }
+  }
+
+  function selectSuggestion(id) {
+    document.getElementById('searchSuggestions').style.display = 'none';
+    openModal(id);
+  }
+
+  // Close suggestions when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrap')) {
+      document.getElementById('searchSuggestions').style.display = 'none';
+    }
+  });
+
   function openModal(id) {
-    currentMovie = allMovies.find(m => m.id == id);
+    currentMovie = [...allMovies, ...searchResults].find(m => m.id == id);
     if (!currentMovie) return;
 
     const isInWatchlist = userWatchlist.some(item => item.movie_id === currentMovie.id);
     const tags = currentMovie.tags ? currentMovie.tags.split(',').map(t => t.trim()) : [];
 
     document.getElementById('mTitle').textContent = currentMovie.title;
-    document.getElementById('mRating').innerHTML = `★ ${currentMovie.rating || '—'} <small>/10</small>`;
+    document.getElementById('mRating').innerHTML = `★ ${currentMovie.rating ? currentMovie.rating.toFixed(1) : '—'} <small>/10</small>`;
     document.getElementById('mDesc').textContent = currentMovie.description || 'No description available.';
     
     if (currentMovie.poster_url) {
       document.getElementById('mPoster').innerHTML = `<img src="${currentMovie.poster_url}" style="width:100%;height:100%;object-fit:cover;">`;
+      document.getElementById('modalBg').style.backgroundImage = `url(${currentMovie.poster_url})`;
     } else {
       document.getElementById('mPoster').textContent = currentMovie.emoji || '🎬';
+      document.getElementById('modalBg').style.backgroundImage = 'none';
     }
 
     document.getElementById('mTags').innerHTML = tags
       .map(t => `<span class="m-tag">${t}</span>`).join('');
-    document.getElementById('modalWatchlistBtn').style.display = userToken ? 'flex' : 'none';
-    document.getElementById('modalWatchlistBtn').innerHTML = isInWatchlist ? '❤️ Remove from Watchlist' : '🤍 Add to Watchlist';
-    document.getElementById('modalWatchlistBtn').onclick = () => toggleWatchlist(currentMovie.id, isInWatchlist);
+
+    const isExternal = currentMovie.is_external;
+    document.getElementById('modalWatchlistBtn').style.display = (userToken && !isExternal) ? 'flex' : 'none';
+
+    // Update play buttons for external
+    const playBtn = document.querySelector('.m-actions .btn-play');
+    const dlBtn = document.querySelector('.m-actions .btn-dl-link');
+
+    if (isExternal) {
+      playBtn.style.display = 'none';
+      dlBtn.style.display = 'none';
+      if (!document.getElementById('externalNotice')) {
+        document.querySelector('.modal-info').insertAdjacentHTML('beforeend', `
+          <div id="externalNotice" style="margin-top:1.5rem;padding:1rem;background:rgba(232,184,75,0.1);border:1px solid var(--accent);border-radius:8px;font-size:0.85rem;color:var(--text);">
+            <strong style="color:var(--accent);display:block;margin-bottom:0.4rem;">External Result</strong>
+            This movie is found online but not yet uploaded to MovieShark. Contact admin to request a high-quality upload.
+          </div>
+        `);
+      }
+    } else {
+      playBtn.style.display = 'flex';
+      dlBtn.style.display = 'flex';
+      const notice = document.getElementById('externalNotice');
+      if (notice) notice.remove();
+
+      document.getElementById('modalWatchlistBtn').innerHTML = isInWatchlist ? '❤️ Remove from Watchlist' : '🤍 Add to Watchlist';
+      document.getElementById('modalWatchlistBtn').onclick = () => toggleWatchlist(currentMovie.id, isInWatchlist);
+    }
 
     document.getElementById('streamSection').classList.remove('open');
     document.getElementById('dlSection').classList.remove('open');
@@ -1024,13 +1179,53 @@
   function openStream() {
     if (currentMovie && currentMovie.videoFile) {
       const videoPlayer = document.getElementById('videoPlayer');
-      videoPlayer.src = `${API_BASE}/movies/${currentMovie.id}/stream`;
+
+      // Initialize Video.js if not already done
+      if (!player) {
+        player = videojs('videoPlayer', {
+          fluid: true,
+          playbackRates: [0.5, 1, 1.5, 2]
+        });
+
+        player.on('timeupdate', () => {
+          if (Math.floor(player.currentTime()) % 5 === 0) { // Save every 5 seconds
+            saveProgress();
+          }
+        });
+      }
+
+      const streamUrl = `${API_BASE}/movies/${currentMovie.id}/stream`;
+      player.src({ type: 'video/mp4', src: streamUrl });
+
       document.getElementById('streamSection').classList.add('open');
       document.getElementById('dlSection').classList.remove('open');
+
+      // Load progress
+      const saved = localStorage.getItem(`progress_${currentMovie.id}`);
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.time > 10 && (data.duration - data.time) > 30) {
+          if (confirm(`Resume "${currentMovie.title}" from ${Math.floor(data.time / 60)}m ${Math.floor(data.time % 60)}s?`)) {
+            player.currentTime(data.time);
+          }
+        }
+      }
+
+      player.play();
       toast('▶ Streaming "' + currentMovie.title + '"');
     } else if (currentMovie) {
-      toast('⚠️ No video file available. This is a demo movie. Upload videos in the admin panel to stream.', true);
+      toast('⚠️ No video file available. This is a demo movie.', true);
     }
+  }
+
+  function saveProgress() {
+    if (!player || !currentMovie) return;
+    const progress = {
+      time: player.currentTime(),
+      duration: player.duration(),
+      timestamp: Date.now()
+    };
+    localStorage.setItem(`progress_${currentMovie.id}`, JSON.stringify(progress));
   }
 
   function openDL() {
@@ -1054,8 +1249,30 @@
     }
   }
 
-  function doSearch() {
+  async function doSearch() {
     searchTerm = document.getElementById('searchInput').value.trim();
+    if (!searchTerm) {
+      searchResults = [];
+      renderMovies();
+      return;
+    }
+
+    renderSkeletons();
+    try {
+      const res = await fetch(`${API_BASE}/movies/search/${encodeURIComponent(searchTerm)}`);
+      if (!res.ok) throw new Error('Search failed');
+      searchResults = await res.json();
+      renderMovies();
+    } catch (err) {
+      console.error('Search error:', err);
+      toast('⚠️ Online search failed. Showing local results.', true);
+      searchResults = allMovies.filter(m => m.title.toLowerCase().includes(searchTerm.toLowerCase()));
+      renderMovies();
+    }
+  }
+
+  function handleSort(val) {
+    sortBy = val;
     renderMovies();
   }
 
@@ -1089,18 +1306,6 @@
 
 <!-- Video.js Library -->
 <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-
-</body>
-</html>
-<!-- TOAST -->
-<div class="toast" id="toast"><span id="toastMsg"></span></div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo"><img src="assets/logo.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 8px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></div>
-  <p>© 2025 MovieShark. Enjoy your favorite Movies.</p>
-  <p>Built for cinephiles worldwide</p>
-</footer>
 
 </body>
 </html>
