@@ -46,6 +46,33 @@ function initDb() {
     const database = getDb();
     
     database.serialize(() => {
+      // Create users table
+      database.run(`
+        CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT UNIQUE NOT NULL,
+          email TEXT UNIQUE NOT NULL,
+          password TEXT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `, (err) => {
+        if (err) reject(err);
+      });
+
+      // Create watchlist table
+      database.run(`
+        CREATE TABLE IF NOT EXISTS watchlist (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER NOT NULL,
+          movie_id INTEGER NOT NULL,
+          added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+          UNIQUE(user_id, movie_id)
+        )
+      `, (err) => {
+        if (err) reject(err);
+      });
+
       // Create movies table
       database.run(`
         CREATE TABLE IF NOT EXISTS movies (

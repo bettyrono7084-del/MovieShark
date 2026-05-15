@@ -193,9 +193,8 @@
     .movies-section { padding: 1rem 2.5rem 3rem; position: relative; z-index: 1; }
     .movie-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 1.2rem;
-    
     }
 
     /* MOVIE CARD */
@@ -267,17 +266,6 @@
     .no-results.show { display: block; }
     .no-results .nr-icon { font-size: 3.5rem; margin-bottom: 1rem; }
     .no-results h3 { color: var(--text); margin-bottom: 0.5rem; font-size: 1.2rem; }
-
-    /* STATS BAR */
-    .stats-bar {
-      display: flex; gap: 2rem; justify-content: center;
-      padding: 1.5rem 2.5rem; position: relative; z-index: 1;
-      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-      margin-bottom: 2.5rem;
-    }
-    .stat { text-align: center; }
-    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--accent); letter-spacing: 0.05em; }
-    .stat-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
 
     /* MODAL */
     .modal-overlay {
@@ -456,7 +444,7 @@
 
     @media (max-width: 1024px) {
       .hero h1 { font-size: clamp(2.5rem, 7vw, 5rem); }
-      .movie-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .movie-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
     @media (max-width: 768px) {
@@ -478,11 +466,6 @@
       
       .filters { gap: 0.4rem; margin-top: 1rem; }
       .tag { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
-      
-      .stats-bar { gap: 1rem; padding: 1rem; flex-direction: column; }
-      .stat { text-align: center; }
-      .stat-num { font-size: 1.5rem; }
-      .stat-label { font-size: 0.65rem; }
       
       .sec-header { padding: 1.5rem 1rem; }
       .sec-header h2 { font-size: 1.3rem; }
@@ -541,10 +524,6 @@
       
       .filters { gap: 0.3rem; margin-top: 0.8rem; }
       .tag { padding: 0.35rem 0.7rem; font-size: 0.7rem; }
-      
-      .stats-bar { gap: 0.5rem; padding: 1rem 0.75rem; }
-      .stat-num { font-size: 1.3rem; }
-      .stat-label { font-size: 0.6rem; }
       
       .sec-header { padding: 1rem 0.75rem; margin-top: 1rem; }
       .sec-header h2 { font-size: 1.1rem; }
@@ -652,14 +631,6 @@
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat"><div class="stat-num" id="statMovies">0</div><div class="stat-label">Movies</div></div>
-  <div class="stat"><div class="stat-num">4K</div><div class="stat-label">Max Quality</div></div>
-  <div class="stat"><div class="stat-num">FREE</div><div class="stat-label">Always</div></div>
-  <div class="stat"><div class="stat-num">HD</div><div class="stat-label">Downloads</div></div>
-</div>
-
 <!-- MOVIE SECTION -->
 <div class="sec-header">
   <h2>Now <span>Trending</span></h2>
@@ -747,6 +718,10 @@
           <label style="font-size:0.8rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:0.5rem;">Username</label>
           <input type="text" id="authUsername" placeholder="Enter your username" style="width:100%;padding:0.75rem;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:'DM Sans',sans-serif;"/>
         </div>
+        <div id="authEmailContainer" style="display:none;">
+          <label style="font-size:0.8rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:0.5rem;">Email</label>
+          <input type="email" id="authEmail" placeholder="Enter your email" style="width:100%;padding:0.75rem;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:'DM Sans',sans-serif;"/>
+        </div>
         <div>
           <label style="font-size:0.8rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:0.5rem;">Password</label>
           <input type="password" id="authPassword" placeholder="••••••••" style="width:100%;padding:0.75rem;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:'DM Sans',sans-serif;"/>
@@ -822,8 +797,10 @@
     document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Login' : 'Register';
     document.getElementById('authToggleText').textContent = mode === 'login' ? "Don't have an account?" : "Already have an account?";
     document.querySelector('#authModalOverlay a').textContent = mode === 'login' ? 'Register' : 'Login';
+    document.getElementById('authEmailContainer').style.display = mode === 'register' ? 'block' : 'none';
     document.getElementById('authError').style.display = 'none';
     document.getElementById('authUsername').value = '';
+    document.getElementById('authEmail').value = '';
     document.getElementById('authPassword').value = '';
     document.getElementById('authModalOverlay').classList.add('open');
   }
@@ -844,6 +821,7 @@
   async function handleAuthSubmit() {
     const username = document.getElementById('authUsername').value.trim();
     const password = document.getElementById('authPassword').value.trim();
+    const email = document.getElementById('authEmail').value.trim();
     const errorEl = document.getElementById('authError');
     errorEl.style.display = 'none';
 
@@ -853,12 +831,34 @@
       return;
     }
 
+    if (authMode === 'register' && !email) {
+      errorEl.textContent = 'Please enter an email address.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    if (authMode === 'register' && !email.includes('@')) {
+      errorEl.textContent = 'Please enter a valid email address.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    if (password.length < 6) {
+      errorEl.textContent = 'Password must be at least 6 characters.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
     try {
       const endpoint = authMode === 'login' ? '/auth/login' : '/auth/register';
+      const body = authMode === 'login' 
+        ? { username, password }
+        : { username, email, password };
+
       const res = await fetch(`${API_BASE}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify(body)
       });
 
       if (!res.ok) {
@@ -868,7 +868,7 @@
 
       const data = await res.json();
       userToken = data.token;
-      currentUserId = data.userId; // Assuming backend returns userId
+      currentUserId = data.userId;
       localStorage.setItem('user_token', userToken);
       localStorage.setItem('user_id', currentUserId);
       
@@ -900,11 +900,12 @@
       return;
     }
     try {
-      const res = await fetch(`${API_BASE}/user/${currentUserId}/watchlist`, {
+      const res = await fetch(`${API_BASE}/movies/watchlist/my-list`, {
         headers: { 'Authorization': `Bearer ${userToken}` }
       });
       if (!res.ok) throw new Error('Failed to load watchlist');
-      userWatchlist = await res.json();
+      const watchlistMovies = await res.json();
+      userWatchlist = watchlistMovies.map(m => ({ movie_id: m.id })); // Store as movie IDs for compatibility
       renderWatchlistSection();
       renderMovies(); // Re-render main grid to update watchlist buttons
     } catch (err) {
@@ -923,9 +924,12 @@
     }
 
     try {
-      const method = isInWatchlist ? 'DELETE' : 'POST';
-      const res = await fetch(`${API_BASE}/user/${currentUserId}/watchlist/${movieId}`, {
-        method: method,
+      const endpoint = isInWatchlist 
+        ? `${API_BASE}/movies/${movieId}/watchlist/remove`
+        : `${API_BASE}/movies/${movieId}/watchlist/add`;
+      
+      const res = await fetch(endpoint, {
+        method: 'POST',
         headers: { 'Authorization': `Bearer ${userToken}` }
       });
 
@@ -1011,8 +1015,6 @@
   }
 
   function renderMovies() {
-    document.getElementById('statMovies').textContent = allMovies.length;
-
     let moviesToRender = searchTerm ? searchResults : allMovies;
 
     if (activeGenre === 'watchlist' && userToken) {

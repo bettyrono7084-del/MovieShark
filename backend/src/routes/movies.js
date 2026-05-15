@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { allAsync, getAsync, runAsync } = require('../db/init');
+const { authenticateToken } = require('../middleware/auth');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -23,10 +24,23 @@ function searchTMDB(query) {
 
     https.get(url, (res) => {
       let data = '';
+      
+      // Check for HTTP error status
+      if (res.statusCode !== 200) {
+        console.warn(`TMDB API returned status ${res.statusCode}`);
+      }
+      
       res.on('data', (chunk) => data += chunk);
       res.on('end', () => {
         try {
           const json = JSON.parse(data);
+          
+          // Check for API errors
+          if (json.error || json.errors) {
+            console.warn('TMDB API error:', json.error || json.errors);
+            return resolve([]);
+          }
+          
           const results = (json.results || []).slice(0, 10).map(m => ({
             id: `ext_${m.id}`,
             title: m.title,
@@ -184,6 +198,100 @@ router.get('/:id/download', async (req, res) => {
     });
   } catch (err) {
     console.error('Download error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get user's watchlist (requires authentication)
+router.get('/watchlist/my-list', authenticateToken, async (req, res) => {
+  try {
+    const movies = await allAsync(`
+      SELECT m.* FROM movies m
+      INNER JOIN watchlist w ON m.id = w.movie_id
+      WHERE w.user_id = (SELECT id FROM users WHERE username = ?)
+      ORDER BY w.added_at DESC
+    `, [req.user.username]);
+    res.json(movies);
+  } catch (err) {
+    console.error('Watchlist error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add movie to watchlist (requires authentication)
+router.post('/:id/watchlist/add', authenticateToken, async (req, res) => {
+  try {
+    const movieId = req.params.id;
+    
+    // Verify movie exists
+    const movie = await getAsync('SELECT id FROM movies WHERE id = ?', [movieId]);
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+
+    // Get user ID
+    const user = await getAsync('SELECT id FROM users WHERE username = ?', [req.user.username]);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Add to watchlist
+    await runAsync(
+      'INSERT OR IGNORE INTO watchlist (user_id, movie_id) VALUES (?, ?)',
+      [user.id, movieId]
+    );
+
+    res.json({ success: true, message: 'Added to watchlist' });
+  } catch (err) {
+    console.error('Add to watchlist error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Remove movie from watchlist (requires authentication)
+router.post('/:id/watchlist/remove', authenticateToken, async (req, res) => {
+  try {
+    const movieId = req.params.id;
+
+    // Get user ID
+    const user = await getAsync('SELECT id FROM users WHERE username = ?', [req.user.username]);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Remove from watchlist
+    await runAsync(
+      'DELETE FROM watchlist WHERE user_id = ? AND movie_id = ?',
+      [user.id, movieId]
+    );
+
+    res.json({ success: true, message: 'Removed from watchlist' });
+  } catch (err) {
+    console.error('Remove from watchlist error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Check if movie is in user's watchlist (requires authentication)
+router.get('/:id/watchlist/check', authenticateToken, async (req, res) => {
+  try {
+    const movieId = req.params.id;
+
+    // Get user ID
+    const user = await getAsync('SELECT id FROM users WHERE username = ?', [req.user.username]);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if in watchlist
+    const inWatchlist = await getAsync(
+      'SELECT id FROM watchlist WHERE user_id = ? AND movie_id = ?',
+      [user.id, movieId]
+    );
+
+    res.json({ inWatchlist: !!inWatchlist });
+  } catch (err) {
+    console.error('Watchlist check error:', err);
     res.status(500).json({ error: err.message });
   }
 });
