@@ -12,13 +12,13 @@
   </defs>
 
   <!-- Background circle -->
-  <circle cx="200" cy="150" r="140" fill="#0c0c0cfd" stroke="#e74c3c" stroke-width="4"/>
+  <circle cx="200" cy="150" r="140" fill="#1a1235fd" stroke="#9e770dee" stroke-width="4"/>
 
 
 
   <!-- Large M letter -->
-    <text x="201" y="230" text-anchor="middle" font-family="Arial Black" 
-        font-size="230" font-weight="bold" fill="#f39c12" letter-spacing="4">
+    <text x="201" y="230" text-anchor="middle" font-family="Copperplate Gothic Bold" 
+        font-size="230" font-weight="bold" fill="#574104" letter-spacing="4">
     M
   </text>
 
