@@ -29,32 +29,28 @@
     fill="url(#bg)"
     stroke="url(#gold)"
     stroke-width="12"/>
-
- 
-
- 
+   <text
+    x="600"
+    y="400"
+    text-anchor="middle"
+    font-size="50"
+    font-family="Cinzel, serif"
+    fill="url(#roseGold)"
+    letter-spacing="6">
+    HARKS
+  </text>
 
   <!-- Main M -->
   <text
     x="400"
-    y="540"
+    y="600"
     text-anchor="middle"
-    font-size="510"
+    font-size="630"
     font-family="Times New Roman, serif"
     fill="url(#roseGold)"
     letter-spacing="6">
-    M
+    S
   </text>
 
-  <!-- Bottom text -->
-  <text
-    x="400"
-    y="610"
-    text-anchor="middle"
-    font-size="55"
-    font-family="Times New Roman, serif"
-    fill="url(#gold)"
-    letter-spacing="3">
-    MOVIE SHARK
-  </text>
+
 </svg>

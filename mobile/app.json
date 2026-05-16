@@ -3,6 +3,7 @@
     "name": "MovieShark",
     "slug": "movieshark",
     "version": "1.0.0",
+    "sdkVersion": "49.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
@@ -33,6 +34,11 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "216a7bb3-746a-4db6-9be6-ebc835fb2bce"
+      }
+    }
   }
 }

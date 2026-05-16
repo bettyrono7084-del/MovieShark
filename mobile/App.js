@@ -11,7 +11,7 @@ import { WebView } from 'react-native-webview';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 // Your production URL
-const SERVER_URL = 'https://web-production-0a9fe.up.railway.app/';
+const SERVER_URL = 'https://movieshark.dpdns.org';
 
 export default function App() {
   const webViewRef = useRef(null);

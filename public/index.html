@@ -29,15 +29,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #080a0f;
-      --surface: #0e1117;
-      --card: #131720;
-      --border: #1e2535;
-      --accent: #e8b84b;
-      --accent2: #ff4d6d;
-      --text: #e8eaf0;
-      --muted: #6b7492;
-      --shark: #1a2540;
+      --bg: #0b1b33;
+      --surface: #97da1d;
+      --card: #080808f6;
+      --border: #be950b;
+      --accent: #b47043;
+      --accent2: #fcba05;
+      --text: #8a6520;
+      --muted: #c7c417;
+      --shark:#d59a73;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,7 +46,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Cinzel', serif;
       min-height: 100vh;
       overflow-x: hidden;
     }
@@ -89,8 +89,8 @@
     .nav-right a:hover { color: var(--text); }
 
     .btn-outline {
-      background: transparent; border: 1px solid var(--accent);
-      color: var(--accent); padding: 0.4rem 1.1rem; border-radius: 4px;
+      background: #b47043; border: 1px solid var(--accent);
+      color: #b47043; padding: 0.4rem 1.1rem; border-radius: 4px;
       font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600;
       letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s; text-decoration: none !important;
     }
@@ -108,17 +108,18 @@
       display: flex; align-items: center; justify-content: center; gap: 0.75rem;
     }
     .eyebrow::before, .eyebrow::after {
-      content: ''; width: 40px; height: 1px; background: var(--accent); opacity: 0.4;
+      content: ''; width: 40px; height: 1px; background: blue; opacity: 0.4;
     }
 
     .hero h1 {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: 'Cinzel', serif;
+      color: linear-gradient (#fce3a2 0%, #d3b35b 50%, #8a6520 100%) !important;
       font-size: clamp(3.5rem, 9vw, 7rem);
       letter-spacing: 0.04em; line-height: 0.93; margin-bottom: 1.25rem;
     }
     .hero h1 em {
-      font-family: 'Playfair Display', serif;
-      font-style: italic; color: var(--accent); display: block;
+      font-family: 'Arial Black';
+      font-style: none; color: #b06d47; display: block;
     }
 
     .hero-sub {
@@ -159,7 +160,7 @@
       background: var(--accent); border: none; border-radius: 6px;
       padding: 0.58rem 1.3rem;
       font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 0.06em;
-      color: #080a0f; cursor: pointer; transition: opacity 0.2s;
+      color: #f0f1f3ea; cursor: pointer; transition: opacity 0.2s;
     }
     .search-btn:hover { opacity: 0.82; }
 
@@ -508,8 +509,7 @@
       .logo { font-size: 1.2rem; gap: 0.25rem; }
       .logo img { height: 28px; margin-right: 0; }
       .nav-right { gap: 0.75rem; }
-      .nav-right a { font-size: 0.7rem; display: none; }
-      .nav-right a:last-child { display: inline; }
+      .nav-right a { font-size: 0.7rem; }
       .btn-outline { padding: 0.35rem 0.8rem; font-size: 0.7rem; }
       
       .hero { padding: 2rem 0.75rem 1.5rem; }
@@ -591,7 +591,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="index.html"><img src="icon/favicon.svg"  style="height: 40px; width: auto; margin-right: 8px; flex-shrink: 0;"> Movie<span>Shark</span></a>
+  <a class="logo" href="#" onclick="showPage('movies')"><img src="icon/favicon.svg"  style="height: 40px; width: auto; margin-right: 8px; flex-shrink: 0;"> Movie<span>Shark</span></a>
   <div class="nav-right" id="navAuthButtons">
     <a href="#" onclick="showLoginRegisterModal('login')">Login</a>
     <a href="#" onclick="showLoginRegisterModal('register')">Register</a>
@@ -600,10 +600,11 @@
   </div>
 </nav>
 
+<div id="moviesPage">
 <!-- HERO -->
 <section class="hero">
   <div class="eyebrow">🎬 Stream &amp; Download Free</div>
-  <h1>The Ocean<em>of Cinema</em></h1>
+  <h1>The Ocean of Cinema</h1>
   <p class="hero-sub">Dive into thousands of movies. Stream instantly or download in HD — no limits, no hassle.</p>
 
   <div class="search-wrap">
@@ -653,6 +654,65 @@
 <section class="movies-section" id="watchlistSection" style="display:none;">
   <div class="movie-grid" id="watchlistGrid"></div>
 </section>
+</div>
+
+<!-- SONGS SECTION -->
+<div id="songsPage" style="display:none;">
+  <section class="hero">
+    <div class="eyebrow">🎵 YouTube Music Downloader</div>
+    <h1 style="color: var(--accent2) !important;">Shark <span>MP3</span></h1>
+    <p class="hero-sub">Enter a YouTube URL to convert and download music instantly from the ocean of sounds.</p>
+
+    <div class="search-wrap" style="margin-bottom: 0;">
+      <input type="text" id="songSearchInput" placeholder="Paste YouTube link or search song name..." autocomplete="off"/>
+      <button class="search-btn" onclick="handleSongSearch()">SEARCH</button>
+    </div>
+
+    <div id="songResult" style="margin-top: 3rem; display: none; justify-content: center;">
+      <div class="movie-card" style="width: 320px; cursor: default;">
+          <div class="card-poster" id="songThumbnail" style="font-size: 5rem;">🎵</div>
+          <div class="card-body">
+              <div class="card-title" id="songTitle" style="white-space: normal; height: 3rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">Song Title</div>
+              <div class="card-meta">
+                  <span id="songChannel">Channel</span>
+              </div>
+          </div>
+          <div class="card-actions">
+              <div style="display: flex; gap: 0.5rem; width: 100%; flex-wrap: wrap;">
+                  <select id="mediaFormat" class="sort-select" style="flex: 1;" onchange="updateQualityOptions()">
+                      <option value="mp3">Audio (MP3)</option>
+                      <option value="mp4">Video (MP4)</option>
+                  </select>
+                  <select id="mediaQuality" class="sort-select" style="flex: 1;">
+                      <option value="128">128 kbps</option>
+                      <option value="256">256 kbps</option>
+                      <option value="320">320 kbps</option>
+                  </select>
+                  <button class="btn-stream" style="width: 100%;" onclick="downloadMedia()">Download</button>
+              </div>
+          </div>
+          <div id="progressContainer" style="display: none; padding: 0 0.7rem 1rem;">
+              <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 4px; height: 10px; overflow: hidden; margin-bottom: 0.3rem;">
+                  <div id="progressBar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.3s;"></div>
+              </div>
+              <div id="progressText" style="font-size: 0.75rem; color: var(--muted); text-align: center;">Processing: 0%</div>
+          </div>
+      </div>
+    </div>
+
+    <!-- SONG SEARCH RESULTS -->
+    <div id="songSearchResults" class="movie-grid" style="margin-top: 2rem; display: none;"></div>
+  </section>
+
+  <!-- HISTORY SECTION -->
+  <section class="movies-section" id="historySection" style="margin-top: -3rem; padding-bottom: 5rem;">
+    <div class="sec-header">
+      <h2>Recent <span>Downloads</span></h2>
+      <a href="#" onclick="clearDownloadHistory(event)">Clear History</a>
+    </div>
+    <div class="movie-grid" id="historyGrid"></div>
+  </section>
+</div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeOut(event)">
@@ -773,10 +833,12 @@
   /* ─── AUTHENTICATION FUNCTIONS ─── */
   function checkAuthStatus() {
     const loggedIn = !!userToken;
+    const moviesLink = `<a href="#" onclick="showPage('movies')">Movies</a>`;
+    const songsLink = `<a href="#" onclick="showPage('songs')">Music</a>`;
     document.getElementById('navAuthButtons').innerHTML = loggedIn
-      ? `<a href="#" id="myWatchlistLink" onclick="filterGenre('watchlist', this)">My Watchlist</a>
+      ? `${moviesLink}${songsLink}<a href="#" id="myWatchlistLink" onclick="filterGenre('watchlist', this)">My Watchlist</a>
          <a href="#" id="logoutButton" onclick="handleUserLogout()">Logout</a>`
-      : `<a href="#" onclick="showLoginRegisterModal('login')">Login</a>
+      : `${moviesLink}${songsLink}<a href="#" onclick="showLoginRegisterModal('login')">Login</a>
          <a href="#" onclick="showLoginRegisterModal('register')">Register</a>`;
     
     document.getElementById('watchlistHeader').style.display = loggedIn ? 'flex' : 'none';
@@ -890,6 +952,240 @@
     toast('👋 Logged out.');
     checkAuthStatus();
     filterGenre('all', document.querySelector('.filters .tag.active') || document.querySelector('.filters .tag')); // Reset filter to 'All'
+  }
+
+  function showPage(page) {
+    const mPage = document.getElementById('moviesPage');
+    const sPage = document.getElementById('songsPage');
+    if (page === 'songs') {
+      mPage.style.display = 'none';
+      sPage.style.display = 'block';
+      document.getElementById('songSearchInput').value = ''; // Clear input
+      document.getElementById('songResult').style.display = 'none'; // Hide single result
+      document.getElementById('songSearchResults').style.display = 'none'; // Hide search results
+      renderDownloadHistory();
+    } else {
+      mPage.style.display = 'block';
+      sPage.style.display = 'none';
+    }
+  }
+  
+  // Helper to validate YouTube URL
+  function isValidYouTubeUrl(url) {
+    const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|)([\w-]{11})(.*)?$/;
+    return regex.test(url);
+  }
+
+  // Fetches details for a specific YouTube URL and displays it in the single card
+  async function fetchSongDetails(url) {
+    document.getElementById('songSearchResults').style.display = 'none'; // Hide search results
+    document.getElementById('songResult').style.display = 'flex'; // Show single result card
+
+    toast('🔍 Fetching video details...');
+    try {
+      const res = await fetch(`${API_BASE}/songs/info?url=${encodeURIComponent(url)}`);
+      if (!res.ok) throw new Error('Could not fetch video info');
+      
+      const data = await res.json();
+      document.getElementById('songTitle').textContent = data.title;
+      document.getElementById('songChannel').textContent = data.author || 'YouTube';
+      if (data.thumbnail) {
+        document.getElementById('songThumbnail').innerHTML = `<img src="${data.thumbnail}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else {
+        document.getElementById('songThumbnail').innerHTML = '🎵'; // Default icon
+      }
+    } catch (err) {
+      toast('⚠️ Failed to fetch video info. Make sure the URL is correct.', true);
+      document.getElementById('songResult').style.display = 'none'; // Hide single result card on error
+    }
+  }
+
+  // Searches YouTube by query and displays results in a grid
+  async function searchYouTubeSongs(query) {
+    document.getElementById('songResult').style.display = 'none'; // Hide single result card
+    toast('🔍 Searching YouTube...');
+    try {
+      const res = await fetch(`${API_BASE}/songs/search?query=${encodeURIComponent(query)}`);
+      if (!res.ok) throw new Error('Could not search YouTube');
+
+      const data = await res.json();
+      renderSongSearchResults(data);
+    } catch (err) {
+      toast('⚠️ Failed to search YouTube. ' + err.message, true);
+      document.getElementById('songSearchResults').style.display = 'none'; // Hide search results on error
+    }
+  }
+
+  // Main handler for the song search input
+  async function handleSongSearch() {
+    const input = document.getElementById('songSearchInput').value.trim();
+    if (!url) {
+      toast('⚠️ Please enter a YouTube URL or a song name.', true);
+      return;
+    }
+
+    if (isValidYouTubeUrl(input)) {
+      await fetchSongDetails(input);
+    } else {
+      await searchYouTubeSongs(input);
+    }
+  }
+
+  // Renders multiple search results in the grid
+  function renderSongSearchResults(results) {
+    const grid = document.getElementById('songSearchResults');
+    if (results.length === 0) {
+      grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--muted); opacity: 0.6; padding: 2rem;">No results found for your search.</p>';
+      grid.style.display = 'block';
+      return;
+    }
+
+    grid.innerHTML = results.map(item => `
+      <div class="movie-card" onclick="selectSongFromSearch('${item.url}')">
+          <div class="card-poster" style="aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+              ${item.thumbnail ? `<img src="${item.thumbnail}" style="width:100%;height:100%;object-fit:cover;">` : '🎵'}
+          </div>
+          <div class="card-body">
+              <div class="card-title" style="white-space: normal; height: 3rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${item.title}</div>
+              <div class="card-meta">
+                  <span>${item.author || 'YouTube'}</span>
+              </div>
+          </div>
+      </div>
+    `).join('');
+    grid.style.display = 'grid'; // Ensure it's a grid
+  }
+
+  // Selects a song from search results, populates the input, and fetches details
+  async function selectSongFromSearch(youtubeUrl) {
+    document.getElementById('songSearchInput').value = youtubeUrl;
+    await fetchSongDetails(youtubeUrl);
+  }
+
+  function updateQualityOptions() {
+    const format = document.getElementById('mediaFormat').value;
+    const qualitySelect = document.getElementById('mediaQuality');
+    qualitySelect.innerHTML = '';
+
+    if (format === 'mp3') {
+      qualitySelect.innerHTML = `
+        <option value="128">128 kbps</option>
+        <option value="256">256 kbps</option>
+        <option value="320">320 kbps</option>`;
+    } else {
+      qualitySelect.innerHTML = `
+        <option value="360">360p</option> <!-- ytdl-core usually provides 360p, 480p, 720p, 1080p -->
+        <option value="480">480p</option>
+        <option value="720">720p</option>
+        <option value="1080">1080p</option>`; 
+    }
+  }
+
+  async function downloadMedia() { // This function remains the same, it uses the URL from the input field
+    const url = document.getElementById('songSearchInput').value.trim();
+    const format = document.getElementById('mediaFormat').value;
+    const quality = document.getElementById('mediaQuality').value;
+    
+    if (!url) return;
+    
+    const progContainer = document.getElementById('progressContainer');
+    const progBar = document.getElementById('progressBar');
+    const progText = document.getElementById('progressText');
+    
+    progContainer.style.display = 'block';
+    progBar.style.width = '0%';
+    progText.textContent = 'Starting conversion...';
+    toast(`⚙️ Initializing ${format.toUpperCase()} conversion...`);
+
+    try {
+      const res = await fetch(`${API_BASE}/songs/download?url=${encodeURIComponent(url)}&format=${format}&quality=${quality}`);
+      const { jobId } = await res.json();
+
+      // Listen for progress updates using Server-Sent Events
+      const eventSource = new EventSource(`${API_BASE}/songs/progress/${jobId}`);
+      
+      eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        if (data.status === 'queued') {
+          progText.textContent = 'Waiting in queue...';
+        } else {
+          progBar.style.width = `${data.progress}%`;
+          progText.textContent = `Processing: ${data.progress}%`;
+        }
+
+        if (data.status === 'completed') {
+          eventSource.close();
+          progText.textContent = 'Done! Starting download...';
+          
+          // Save to local storage history
+          saveToHistory({
+            title: document.getElementById('songTitle').textContent,
+            thumbnail: document.getElementById('songThumbnail').innerHTML,
+            channel: document.getElementById('songChannel').textContent,
+            date: new Date().toLocaleDateString(),
+            format: format,
+            quality: quality
+          });
+
+          window.location.href = `${API_BASE}/songs/retrieve/${jobId}`;
+          setTimeout(() => { progContainer.style.display = 'none'; }, 3000);
+        }
+        
+        if (data.status === 'error') {
+          eventSource.close();
+          toast('⚠️ Conversion failed.', true);
+          progContainer.style.display = 'none';
+        }
+      };
+    } catch (err) {
+      toast('⚠️ Failed to start download.', true);
+    }
+  }
+
+  function saveToHistory(song) {
+    let history = JSON.parse(localStorage.getItem('ms_download_history') || '[]');
+    // Remove if already exists to move to top
+    history = history.filter(item => !(item.title === song.title && item.channel === song.channel));
+    history.unshift(song);
+    // Keep only last 10 entries
+    localStorage.setItem('ms_download_history', JSON.stringify(history.slice(0, 10)));
+    renderDownloadHistory();
+  }
+
+  function renderDownloadHistory() {
+    const grid = document.getElementById('historyGrid');
+    if (!grid) return;
+    const history = JSON.parse(localStorage.getItem('ms_download_history') || '[]');
+    
+    if (history.length === 0) {
+      grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--muted); opacity: 0.6; padding: 2rem;">No recent downloads found.</p>';
+      return;
+    }
+
+    grid.innerHTML = history.map(item => `
+      <div class="movie-card" style="cursor: default; opacity: 0.9;">
+          <div class="card-poster" style="aspect-ratio: 16/9; font-size: 2rem;">${item.thumbnail}</div>
+          <div class="card-body" style="padding: 0.6rem;">
+              <div class="card-title" style="font-size: 0.75rem; white-space: normal; height: 2rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 0.2rem;">${item.title}</div>
+              <div class="card-meta" style="font-size: 0.65rem;">
+                  <span>${item.channel}</span>
+                  <span>${item.date}</span>
+              </div>
+              <div style="font-size: 0.65rem; color: var(--accent); margin-top: 0.4rem; font-weight: 600;">
+                ${item.format.toUpperCase()} • ${item.quality}${item.format === 'mp3' ? 'kbps' : 'p'}
+              </div>
+          </div>
+      </div>
+    `).join('');
+  }
+
+  function clearDownloadHistory(e) {
+    e.preventDefault();
+    if (confirm('Are you sure you want to clear your download history?')) {
+      localStorage.removeItem('ms_download_history');
+      renderDownloadHistory();
+    }
   }
 
   /* ─── WATCHLIST FUNCTIONS ─── */
@@ -1303,6 +1599,7 @@
   }
 
   // Load movies on page load
+  checkAuthStatus();
   loadMovies();
 </script>
 

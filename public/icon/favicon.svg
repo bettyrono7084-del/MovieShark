@@ -32,22 +32,14 @@
 
  
 
-  <!-- Fin cut detail -->
-  <path
-    d="
-      M398 270
-      Q410 285 412 310
-      Q404 295 396 290
-    "
-    fill="#0b1b33"
-    opacity="0.6"/>
+ 
 
   <!-- Main M -->
   <text
     x="400"
-    y="470"
+    y="540"
     text-anchor="middle"
-    font-size="340"
+    font-size="510"
     font-family="Times New Roman, serif"
     fill="url(#roseGold)"
     letter-spacing="6">
@@ -59,7 +51,7 @@
     x="400"
     y="610"
     text-anchor="middle"
-    font-size="62"
+    font-size="55"
     font-family="Times New Roman, serif"
     fill="url(#gold)"
     letter-spacing="3">
