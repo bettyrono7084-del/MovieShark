@@ -20,24 +20,25 @@
   <meta name="twitter:description" content="Dive into an ocean of cinema. Stream and download thousands of movies in HD and 4K for free.">
   <meta name="twitter:image" content="https://movieshark.example.com/images/og-preview.jpg">
 
-  <link rel="icon" type="image/svg+xml" href="/icon/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <title>MovieShark – Stream & Download</title>
   <!-- Video.js Base CSS and Modern "City" Theme -->
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <link href="https://unpkg.com/@videojs/themes@1.0.1/dist/city/index.css" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #0b1b33;
-      --surface: #97da1d;
-      --card: #080808f6;
-      --border: #be950b;
-      --accent: #b47043;
-      --accent2: #fcba05;
-      --text: #8a6520;
-      --muted: #c7c417;
-      --shark:#d59a73;
+      --bg: #05070a;
+      --surface: #0a0e14;
+      --card: rgba(17, 22, 29, 0.7);
+      --border: rgba(212, 175, 55, 0.2);
+      --accent: #d4af37;
+      --accent2: #f1c40f;
+      --text: #e8eaf0;
+      --muted: #8a94ad;
+      --shark: #1e2633;
+      --gold-gradient: linear-gradient(135deg, #fce3a2 0%, #d3b35b 50%, #8a6520 100%);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,7 +47,7 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Cinzel', serif;
+      font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
     }
@@ -55,15 +56,17 @@
       content: '';
       position: fixed; inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,184,75,0.05) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 85% 90%, rgba(255,77,109,0.04) 0%, transparent 60%);
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212,175,55,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 85% 90%, rgba(212,175,55,0.05) 0%, transparent 60%);
       pointer-events: none; z-index: 0;
     }
 
     /* NAV */
     nav {
       position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
       padding: 0 2.5rem; height: 64px;
       background: rgba(8,10,15,0.9);
       backdrop-filter: blur(16px);
@@ -74,6 +77,7 @@
       font-family: 'Bebas Neue', sans-serif;
       font-size: 2rem; letter-spacing: 0.1em;
       color: var(--accent); text-decoration: none;
+      justify-self: start;
       display: flex; align-items: center; gap: 0.3rem;
     }
     .logo span { color: var(--accent2); }
@@ -89,8 +93,8 @@
     .nav-right a:hover { color: var(--text); }
 
     .btn-outline {
-      background: #b47043; border: 1px solid var(--accent);
-      color: #b47043; padding: 0.4rem 1.1rem; border-radius: 4px;
+      background: transparent; border: 1px solid var(--accent);
+      color: var(--accent); padding: 0.4rem 1.1rem; border-radius: 4px;
       font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600;
       letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s; text-decoration: none !important;
     }
@@ -113,9 +117,12 @@
 
     .hero h1 {
       font-family: 'Cinzel', serif;
-      color: linear-gradient (#fce3a2 0%, #d3b35b 50%, #8a6520 100%) !important;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       font-size: clamp(3.5rem, 9vw, 7rem);
-      letter-spacing: 0.04em; line-height: 0.93; margin-bottom: 1.25rem;
+      letter-spacing: 0.06em; line-height: 0.93; margin-bottom: 1.25rem;
+      font-weight: 700;
     }
     .hero h1 em {
       font-family: 'Arial Black';
@@ -160,7 +167,7 @@
       background: var(--accent); border: none; border-radius: 6px;
       padding: 0.58rem 1.3rem;
       font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 0.06em;
-      color: #f0f1f3ea; cursor: pointer; transition: opacity 0.2s;
+      color: #05070a; cursor: pointer; transition: opacity 0.2s;
     }
     .search-btn:hover { opacity: 0.82; }
 
@@ -200,15 +207,16 @@
 
     /* MOVIE CARD */
     .movie-card {
-      background: var(--card); border: 1px solid var(--border);
+      background: var(--card); border: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
       border-radius: 10px; overflow: hidden;
       cursor: pointer; position: relative;
       transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
     }
     .movie-card:hover {
       transform: translateY(-7px);
-      border-color: rgba(232,184,75,0.5);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(232,184,75,0.15);
+      border-color: var(--accent);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.1);
     }
 
     .card-poster {
@@ -449,7 +457,7 @@
     }
 
     @media (max-width: 768px) {
-      nav { padding: 0 1rem; }
+      nav { padding: 0 1rem; display: flex; justify-content: space-between; }
       .logo { font-size: 1.4rem; gap: 0.2rem; }
       .logo img { height: 32px; }
       .nav-right { gap: 1rem; }
@@ -591,7 +599,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="#" onclick="showPage('movies')"><img src="icon/favicon.svg"  style="height: 40px; width: auto; margin-right: 8px; flex-shrink: 0;"> Movie<span>Shark</span></a>
+  <a class="logo" href="#" onclick="showPage('movies')"><img src="assets/logo.svg"  style="height: 40px; width: auto; margin-right: 8px; flex-shrink: 0;"> Movie<span>Shark</span></a>
   <div class="nav-right" id="navAuthButtons">
     <a href="#" onclick="showLoginRegisterModal('login')">Login</a>
     <a href="#" onclick="showLoginRegisterModal('register')">Register</a>
@@ -632,6 +640,15 @@
   </div>
 </section>
 
+<!-- GLOBAL TRENDING SECTION -->
+<div class="sec-header" id="globalTrendingHeader" style="display:none; margin-top: 2rem;">
+  <h2>Global <span>Trending</span> <small style="font-family:'DM Sans'; font-size: 0.7rem; opacity: 0.7; font-weight: 400; text-transform: none; margin-left: 0.5rem;">(Powered by TMDB)</small></h2>
+  <a href="#" onclick="event.preventDefault(); showPage('global-trending')">See More →</a>
+</div>
+<section class="movies-section" id="globalTrendingSection" style="display:none; padding-bottom: 0;">
+  <div class="movie-grid" id="globalTrendingGrid"></div>
+</section>
+
 <!-- MOVIE SECTION -->
 <div class="sec-header">
   <h2>Now <span>Trending</span></h2>
@@ -644,6 +661,7 @@
     <div class="nr-icon">🦈</div>
     <h3>No movies found</h3>
     <p>Try a different title or browse by genre.</p>
+    <button class="btn-outline" style="margin-top: 1.5rem;" onclick="doSearch()">Search Global Database</button>
   </div>
 </section>
 
@@ -660,13 +678,14 @@
 <div id="songsPage" style="display:none;">
   <section class="hero">
     <div class="eyebrow">🎵 YouTube Music Downloader</div>
-    <h1 style="color: var(--accent2) !important;">Shark <span>MP3</span></h1>
+    <h1 style="background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Shark <span>MP3</span></h1>
     <p class="hero-sub">Enter a YouTube URL to convert and download music instantly from the ocean of sounds.</p>
 
     <div class="search-wrap" style="margin-bottom: 0;">
       <input type="text" id="songSearchInput" placeholder="Paste YouTube link or search song name..." autocomplete="off"/>
       <button class="search-btn" onclick="handleSongSearch()">SEARCH</button>
     </div>
+    <div id="recentSearchContainer" style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; min-height: 1.5rem;"></div>
 
     <div id="songResult" style="margin-top: 3rem; display: none; justify-content: center;">
       <div class="movie-card" style="width: 320px; cursor: default;">
@@ -711,6 +730,19 @@
       <a href="#" onclick="clearDownloadHistory(event)">Clear History</a>
     </div>
     <div class="movie-grid" id="historyGrid"></div>
+  </section>
+</div>
+
+<!-- GLOBAL TRENDING FULL PAGE -->
+<div id="globalTrendingFullPage" style="display:none;">
+  <section class="hero" style="padding-bottom: 2rem;">
+    <div class="eyebrow">🌎 Worldwide Hits</div>
+    <h1>Global <span>Trending</span></h1>
+    <p class="hero-sub">Explore the most popular movies trending globally right now. Powered by TMDB.</p>
+    <button class="btn-outline" onclick="showPage('movies')">← Back to Library</button>
+  </section>
+  <section class="movies-section">
+    <div class="movie-grid" id="globalTrendingFullGrid"></div>
   </section>
 </div>
 
@@ -804,7 +836,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo"><img src="icon/favicon.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 8px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></div>
+  <div class="footer-logo"><img src="assets/logo.svg" alt="MovieShark Logo" style="height: 32px; width: auto; margin-right: 8px; vertical-align: middle; flex-shrink: 0;"> Movie<span>Shark</span></div>
   <p>© 2025 MovieShark. Enjoy your favorite Movies.</p>
   <p>Built for cinephiles worldwide</p>
 </footer>
@@ -813,6 +845,7 @@
   /* ─── API CONFIGURATION ─── */
   const API_BASE = '/api';
   let allMovies = [];
+  let globalTrending = [];
   let searchResults = []; // Store combined results from backend search
   let activeGenre = 'all';
   let searchTerm = '';
@@ -957,13 +990,19 @@
   function showPage(page) {
     const mPage = document.getElementById('moviesPage');
     const sPage = document.getElementById('songsPage');
+    const gPage = document.getElementById('globalTrendingFullPage');
+
+    mPage.style.display = 'none';
+    sPage.style.display = 'none';
+    gPage.style.display = 'none';
+
     if (page === 'songs') {
-      mPage.style.display = 'none';
       sPage.style.display = 'block';
       document.getElementById('songSearchInput').value = ''; // Clear input
       document.getElementById('songResult').style.display = 'none'; // Hide single result
       document.getElementById('songSearchResults').style.display = 'none'; // Hide search results
       renderDownloadHistory();
+      renderSearchHistory();
     } else {
       mPage.style.display = 'block';
       sPage.style.display = 'none';
@@ -1019,7 +1058,7 @@
   // Main handler for the song search input
   async function handleSongSearch() {
     const input = document.getElementById('songSearchInput').value.trim();
-    if (!url) {
+    if (!input) {
       toast('⚠️ Please enter a YouTube URL or a song name.', true);
       return;
     }
@@ -1027,8 +1066,54 @@
     if (isValidYouTubeUrl(input)) {
       await fetchSongDetails(input);
     } else {
+      saveSearchToHistory(input);
       await searchYouTubeSongs(input);
     }
+  }
+
+  // Functions to handle Recent Search History
+  function saveSearchToHistory(query) {
+    if (!query || query.length < 2) return;
+    let history = JSON.parse(localStorage.getItem('ms_search_history') || '[]');
+    // Remove duplicate if it exists and move to front
+    history = history.filter(item => item.toLowerCase() !== query.toLowerCase());
+    history.unshift(query);
+    // Keep only the last 6 searches
+    localStorage.setItem('ms_search_history', JSON.stringify(history.slice(0, 6)));
+    renderSearchHistory();
+  }
+
+  function renderSearchHistory() {
+    const container = document.getElementById('recentSearchContainer');
+    if (!container) return;
+    const history = JSON.parse(localStorage.getItem('ms_search_history') || '[]');
+    
+    if (history.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+
+    container.innerHTML = `
+      <span style="font-size: 0.75rem; color: var(--muted); align-self: center; margin-right: 0.5rem;">Recent:</span>
+      ${history.map(term => `
+        <button class="tag" style="padding: 0.2rem 0.6rem; font-size: 0.7rem; border-color: rgba(232,184,75,0.3);" 
+                onclick="quickSearch('${term.replace(/'/g, "\\'")}')">
+          ${term}
+        </button>
+      `).join('')}
+      <button class="tag" style="padding: 0.2rem 0.6rem; font-size: 0.7rem; border: none; color: var(--accent2);" 
+              onclick="clearSearchHistory()">✕</button>
+    `;
+  }
+
+  function quickSearch(term) {
+    document.getElementById('songSearchInput').value = term;
+    handleSongSearch();
+  }
+
+  function clearSearchHistory() {
+    localStorage.removeItem('ms_search_history');
+    renderSearchHistory();
   }
 
   // Renders multiple search results in the grid
@@ -1303,11 +1388,70 @@
       if (!response.ok) throw new Error('Failed to fetch movies');
       allMovies = await response.json();
       checkAuthStatus(); // Check auth and load watchlist after movies are loaded
+      fetchGlobalTrending();
       renderMovies();
     } catch (err) {
       console.error('Error loading movies:', err);
       toast('⚠️ Failed to load movies. Please refresh.', true);
     }
+  }
+
+  async function fetchGlobalTrending() {
+    try {
+      const res = await fetch(`${API_BASE}/movies/trending`);
+      if (!res.ok) return;
+      globalTrending = await res.json();
+      
+      if (globalTrending && globalTrending.length > 0) {
+        document.getElementById('globalTrendingHeader').style.display = 'flex';
+        document.getElementById('globalTrendingSection').style.display = 'block';
+        const grid = document.getElementById('globalTrendingGrid');
+        
+        // Show only a preview of 4 items on the home view
+        grid.innerHTML = globalTrending.slice(0, 4).map(m => {
+          const posterContent = m.poster_url ? `<img src="${m.poster_url}" style="width:100%;height:100%;object-fit:cover;">` : (m.emoji || '🎬');
+          return `
+            <div class="movie-card" onclick="openModal('${m.id}')">
+              <div class="card-poster">${posterContent}</div>
+              <span class="card-badge" style="background:var(--accent2)">TRENDING</span>
+              <div class="card-body">
+                <div class="card-title">${m.title}</div>
+                <div class="card-meta"><span>${m.year}</span><span class="card-rating">★ ${m.rating ? m.rating.toFixed(1) : '—'}</span></div>
+              </div>
+              <div class="card-actions">
+                <button class="btn-stream" style="grid-column: span 3; opacity: 0.6; cursor: not-allowed;" title="Available online">ℹ️ Info Only</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    } catch (err) {
+      console.error('Error loading global trending:', err);
+    }
+  }
+
+  function renderGlobalTrendingFull() {
+    const grid = document.getElementById('globalTrendingFullGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = globalTrending.map(m => {
+      const posterContent = m.poster_url ? `<img src="${m.poster_url}" style="width:100%;height:100%;object-fit:cover;">` : (m.emoji || '🎬');
+      return `
+        <div class="movie-card" onclick="openModal('${m.id}')">
+          <div class="card-poster">${posterContent}</div>
+          <span class="card-badge" style="background:var(--accent2)">TRENDING</span>
+          <div class="card-body">
+            <div class="card-title">${m.title}</div>
+            <div class="card-meta"><span>${m.year}</span><span class="card-rating">★ ${m.rating ? m.rating.toFixed(1) : '—'}</span></div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-stream" style="grid-column: span 3; opacity: 0.6; cursor: not-allowed;" title="Available online">ℹ️ Info Only</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function renderMovies() {
@@ -1341,40 +1485,53 @@
     }
     nr.classList.remove('show');
 
-    // Parse tags from comma-separated string
-    grid.innerHTML = filtered.map(m => {
+    const localResults = filtered.filter(m => !m.is_external);
+    const globalResults = filtered.filter(m => m.is_external);
+
+    let html = '';
+
+    const cardTemplate = (m) => {
       const tags = m.tags ? m.tags.split(',').map(t => t.trim()) : [];
       const isInWatchlist = userWatchlist.some(item => item.movie_id === m.id);
       const watchlistBtnText = isInWatchlist ? '❤️ Watchlisted' : '🤍 Watchlist';
       const posterContent = m.poster_url ? `<img src="${m.poster_url}" style="width:100%;height:100%;object-fit:cover;">` : (m.emoji || '🎬');
-
       const isExternal = m.is_external;
+
       const actionBtns = isExternal ? `
-        <button class="btn-stream" style="grid-column: span 3; opacity: 0.6; cursor: not-allowed;" title="Available online - click to view details">ℹ️ Info Only</button>
+        <button class="btn-stream" style="grid-column: span 3; opacity: 0.6; cursor: not-allowed;" title="Available online">ℹ️ Info Only</button>
       ` : `
-        <button class="btn-stream" onclick="event.stopPropagation();quickStream('${m.id}')" title="${m.videoFile ? 'Stream video' : 'No video available'}">▶ Stream</button>
-        <button class="btn-dl" onclick="event.stopPropagation();openModal('${m.id}');setTimeout(openDL,200)" title="${m.videoFile ? 'Download video' : 'No video available'}">⬇ DL</button>
+        <button class="btn-stream" onclick="event.stopPropagation();quickStream('${m.id}')">▶ Stream</button>
+        <button class="btn-dl" onclick="event.stopPropagation();openModal('${m.id}');setTimeout(openDL,200)">⬇ DL</button>
         ${userToken ? `<button class="btn-watchlist" onclick="event.stopPropagation();toggleWatchlist(${m.id}, ${isInWatchlist})">${watchlistBtnText}</button>` : ''}
       `;
 
       return `
-        <div class="movie-card" onclick="openModal('${m.id}')" title="${m.videoFile ? 'Has video file' : isExternal ? 'Online Result' : 'Demo - no video file'}">
+        <div class="movie-card" onclick="openModal('${m.id}')">
           <div class="card-poster">${posterContent}</div>
           ${m.badge ? `<span class="card-badge" style="${isExternal ? 'background:var(--accent2)' : ''}">${m.badge}</span>` : ''}
           ${m.quality ? `<span class="card-quality">${m.quality}</span>` : ''}
           <div class="card-body">
             <div class="card-title">${m.title}</div>
-            <div class="card-meta">
-              <span>${m.year}</span>
-              <span class="card-rating">★ ${m.rating || '—'}</span>
-            </div>
+            <div class="card-meta"><span>${m.year}</span><span class="card-rating">★ ${m.rating || '—'}</span></div>
           </div>
-          <div class="card-actions">
-            ${actionBtns}
-          </div>
+          <div class="card-actions">${actionBtns}</div>
         </div>
       `;
-    }).join('');
+    };
+
+    if (localResults.length > 0) {
+      if (searchTerm && globalResults.length > 0) {
+        html += `<div style="grid-column: 1 / -1; margin-bottom: 0.5rem;"><h3 style="font-family:'Bebas Neue'; color: var(--accent); font-size: 1.4rem; letter-spacing: 0.05em;">In Library</h3></div>`;
+      }
+      html += localResults.map(cardTemplate).join('');
+    }
+
+    if (globalResults.length > 0) {
+      html += `<div style="grid-column: 1 / -1; margin: 2rem 0 0.5rem;"><h3 style="font-family:'Bebas Neue'; color: var(--accent); font-size: 1.4rem; letter-spacing: 0.05em;">Global Results <small style="font-family:'DM Sans'; font-size: 0.7rem; opacity: 0.7; font-weight: 400; text-transform: none;">(Available Online)</small></h3></div>`;
+      html += globalResults.map(cardTemplate).join('');
+    }
+
+    grid.innerHTML = html;
   }
 
   /* ─── SEARCH & SUGGESTIONS ─── */
@@ -1388,20 +1545,23 @@
       return;
     }
 
-    // Local filter for suggestions
     const matches = allMovies.filter(m => m.title.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
 
-    if (matches.length > 0) {
-      suggestionsBox.innerHTML = matches.map(m => `
-        <div class="suggestion-item" onclick="selectSuggestion('${m.id}')">
-          <span>${m.title}</span>
-          <small>${m.year}</small>
-        </div>
-      `).join('');
-      suggestionsBox.style.display = 'block';
-    } else {
-      suggestionsBox.style.display = 'none';
-    }
+    let html = matches.map(m => `
+      <div class="suggestion-item" onclick="selectSuggestion('${m.id}')">
+        <span>${m.title}</span>
+        <small>${m.year}</small>
+      </div>
+    `).join('');
+
+    html += `
+      <div class="suggestion-item" onclick="doSearch()" style="background: rgba(212,175,55,0.05); border-top: 1px solid var(--border);">
+        <span style="color: var(--accent); font-size: 0.8rem;">🔍 Search Global Database for "<strong>${query}</strong>"</span>
+      </div>
+    `;
+
+    suggestionsBox.innerHTML = html;
+    suggestionsBox.style.display = 'block';
   }
 
   function selectSuggestion(id) {
@@ -1417,7 +1577,7 @@
   });
 
   function openModal(id) {
-    currentMovie = [...allMovies, ...searchResults].find(m => m.id == id);
+    currentMovie = [...allMovies, ...searchResults, ...globalTrending].find(m => m.id == id);
     if (!currentMovie) return;
 
     const isInWatchlist = userWatchlist.some(item => item.movie_id === currentMovie.id);

@@ -70,10 +70,12 @@ console.log('✓ Using UPLOAD_DIR:', process.env.UPLOAD_DIR || '(not set, using 
 const moviesRouter = require('./routes/movies');
 const adminRouter = require('./routes/admin');
 const authRouter = require('./routes/auth');
+const songsRouter = require('./routes/songs');
 
 app.use('/api/movies', moviesRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/songs', songsRouter);
 
 // Serve index.html for root path
 app.get('/', (req, res) => {
